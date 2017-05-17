@@ -1,0 +1,36 @@
+<ion-view style="" id="page2" title="Feed">
+ <ion-content>
+        <div ng-repeat="data in feedData">
+            <div class="list card" ng-if="data.hasOwnProperty('description')">
+                <div class="item item-avatar">
+                    <img ng-src="{{feedData.myPicture}}">
+                    <h2>{{data.name}}</h2>
+                    <p><i>Postagem:</i> {{data.created_time}}</p>
+                </div>
+                <div class="item item-body">
+                    <a href="{{data.link}}"><img src="{{data.full_picture}}" width="330px" /></a>
+                    <p class="msg" ng-if="data.hasOwnProperty('message')">{{data.message}}</p>
+                    <p class="msg" ng-if="data.hasOwnProperty('description')">{{data.description}}</p>
+                   <!-- <p>
+                        <a href="#" class="subdued">{{data.likes.data.length}} Likes</a>
+                        <a href="#" class="subdued">{{data.comments.data.length}} Comments</a>
+                    </p> -->
+                </div>
+                <div class="item tabs tabs-secondary tabs-icon-left">
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-thumbsup"></i>
+                        Like
+                    </a>
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-chatbox"></i>
+                        Comment
+                    </a>
+                    <a class="tab-item" href="#">
+                        <i class="icon ion-share"></i>
+                        Share
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
