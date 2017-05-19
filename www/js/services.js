@@ -87,7 +87,21 @@ function($http, $cordovaOauth, $localStorage, $location) {
         /**
         * servico de autenticação no servidor
         */     
-        auth: function(){
+        authServidor: function(usuario) {
+            var settings = {
+                method: 'POST',
+                url: 'http://10.0.0.105:8080/api/login',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {email: usuario.email, senha: usuario.senha} 
+            }
+            
+            return $http(settings);
         },
         /**
         * serviço de autenticação no facebook
@@ -107,10 +121,40 @@ function($http, $cordovaOauth, $localStorage, $location) {
                         return false;
                     })
         },
-    };
+    }
 
    return servicos;
     
     
 
+}])
+
+.service('CrudService', ['$http', '$cordovaOauth', '$localStorage','$location', function($http, $cordovaOauth, $localStorage, $location) {
+  
+    var service = {
+        
+        create: function(usuario) {
+            var settings = {
+                method: 'POST',
+                url: 'http://10.0.0.105:8080/api/cadastrarUsuario',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {
+                    nome: usuario.nome, 
+                    sobreNome: usuario.sobreNome, 
+                    email: usuario.email, 
+                    senha: usuario.senha
+                } 
+            }
+            
+            return $http(settings);
+        }
+    }
+
+   return service;
 }]);

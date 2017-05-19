@@ -1,0 +1,36 @@
+<ion-view  style="" id="page5" title="Criar Conta">
+ 
+  
+  <ion-content class="has-header" padding="true"> 
+    <center style="color:tomato">{{error}}</center>
+    <div style="height: 10px;" class="spacer"></div>
+
+    <form class="list" id="login-form1">
+     <ion-list id="login-list1">
+        <label id="login-input1" class="item item-input">
+          <span class="input-label">Nome</span>
+          <input placeholder="" type="text" ng-model="usuario.nome" name="Nome">
+        </label>
+        <div style="height: 5px;" class="spacer"></div>
+         <label id="login-input1" class="item item-input">
+          <span class="input-label">Sobre Nome</span>
+          <input placeholder="" type="text" ng-model="usuario.sobreNome" name="sobreNome">
+        </label>
+        <div style="height: 5px;" class="spacer"></div>
+        <label id="login-input1" class="item item-input">
+          <span class="input-label">E-mail</span>
+          <input placeholder="" type="text" ng-model="usuario.email" name="email">
+        </label>
+        <div style="height: 5px;" class="spacer"></div>
+        <label id="login-input2" class="item item-input">
+          <span class="input-label">Senha</span>
+          <input placeholder="" type="text" ng-model="usuario.senha" name="senha">
+        </label>
+      </ion-list>
+      
+       <div class="padding">
+            <button ng-click="novoUsuario(usuario)" class="button button-block icon-left  button-energized">Criar</button>
+        </div>
+    </form>
+  </ion-content>
+</ion-view>

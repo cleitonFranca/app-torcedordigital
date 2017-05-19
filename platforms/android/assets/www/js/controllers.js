@@ -14,7 +14,7 @@ function($location, AuthService, $scope, $stateParams, $http, $localStorage, Ace
                     $location.path("/page1/page2");
                 });
             }, function(error) {
-                console.log(error);
+                console.error(error);
             });
     }
 ])
@@ -26,12 +26,13 @@ function($location, AuthService, $scope, $stateParams, ProfileService, $http, $l
                 .then(function(result) {
                     if(result!=null) {
                         $localStorage.username = result.data.name;
-                        $scope.profileData = result.data;           
-
+                        $localStorage.profile = result.data; 
                     }
             }, function(error) {
-                console.log(error);
+                console.error(error);
             });
+
+             $scope.profileData = $localStorage.profile;
     } 
 
 ])
@@ -51,6 +52,36 @@ function ($scope, $stateParams) {
 
 
 }])
+
+.controller('novoUsuarioCtrl', ['$scope', '$stateParams', '$location','$localStorage','CrudService',
+function ($scope, $stateParams, $location, $localStorage, CrudService) {
+    $scope.usuario = {};
+
+    $scope.novoUsuario = function(usuario) {
+        
+        if(usuario.nome!=undefined 
+            && usuario.sobreNome!=undefined 
+            && usuario.senha!=undefined 
+            && usuario.email!=undefined) {      
+            
+            CrudService.create(usuario).then(function(result){
+                console.log(result);
+            }, function(error){
+                console.error(error);
+                $scope.error = error.data.message;
+            })
+       
+        } else {
+             $scope.error = "Há campos obrigatórios não preenchidos!";
+        }
+       
+        console.log(usuario);
+    }
+
+
+
+
+}])
       
 .controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
@@ -64,15 +95,18 @@ function ($scope, $stateParams) {
 
 }])
    
-.controller('loginCtrl', ['$scope', '$stateParams','$location','AuthService','$ionicSideMenuDelegate',
-function ($scope, $stateParams, $location, AuthService, $ionicSideMenuDelegate) {
+.controller('loginCtrl', ['$scope', '$stateParams','$location','$localStorage','AuthService','$ionicSideMenuDelegate',
+function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate) {
 
+    $scope.usuario = {}
+    
+    // desabilitando sideBar
     $ionicSideMenuDelegate.canDragContent(false);
 
     var autenticado = AuthService.authenticated();
 
-    $scope.display = "none";
-    $scope.displayButton = "block";
+    $scope.display = "display:none";
+    $scope.displayButton = "display:block";
     
     if(autenticado === true) {
         $location.path("/page1/page2");
@@ -86,13 +120,33 @@ function ($scope, $stateParams, $location, AuthService, $ionicSideMenuDelegate) 
     }
 
     $scope.loginTorcedor = function() {
-        $scope.display = "block";
-        $scope.displayButton = "none";
+        $scope.display = "display:block";
+        $scope.displayButton = "display:none";
     }
 
     $scope.cancel = function() {
-        $scope.display = "none";
-        $scope.displayButton = "block";
+        $scope.display = "display:none";
+        $scope.displayButton = "display:block";
+    }
+
+    $scope.loginSerivor = function(usuario){
+        AuthService.authServidor(usuario).then(function(d){
+         
+           var data = d.data.usuario;
+           data.name = d.data.usuario.nome;
+
+           $localStorage.username = d.data.usuario.nome;
+           $localStorage.profile = data; 
+
+           $location.path("/page1/page2");
+           
+           console.log($scope.data);
+        }, function(error){
+            console.error(error);
+            $scope.error = error.data.message;
+        })
+
+        
     }
     
 }])
