@@ -78,7 +78,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
         * metodo para verificar se usuario está autenticado
         */
         authenticated: function() {    
-            if($localStorage.hasOwnProperty("accessToken") === true) {
+            if($localStorage.hasOwnProperty("profile") === true) {
                 return true;
             }
             return false;  
@@ -106,32 +106,92 @@ function($http, $cordovaOauth, $localStorage, $location) {
         /**
         * serviço de autenticação no facebook
         */
-        authFacebook: function() {
+        authFacebook: function(scope) {
             if($localStorage.hasOwnProperty("accessToken") === true) {
                 return true;
             }
             $cordovaOauth.facebook("1312201258817812", ["email", "read_stream", "user_website",            
                     "user_location", "user_relationships", "user_posts", "publish_pages", "user_friends", "user_relationship_details", "user_relationships", "user_videos", "pages_messaging", "user_actions.news", "user_actions.video"])
                     .then(function(result) {
-                       
-                        $localStorage.accessToken = result.access_token;
-                        $location.path("/page1/page2");
-                    }, function(error) {
-                        console.log(error);
-                        return false;
+                            $localStorage.accessToken = result.access_token;
+                
+                $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessToken, fields: "id, name, gender, email, location, website,picture, relationship_status", format: "json" }})
+                    .then(function(r) {
+                        if(r!=null) {
+                            $localStorage.username = r.data.name;
+                            $localStorage.profile = r.data;
+
+                            if($localStorage.profile.email) {
+                                var settings = {
+                                    method: 'GET',
+                                    url: 'http://10.0.0.105:8080/api/existe?email='+$localStorage.profile.email,
+                                    headers: {'Content-Type': 'application/x-www-form-urlencoded'} 
+                                }
+                                $http(settings).then(function(data){
+                                     $location.path("/page1/page2");
+                                },function(error){
+                                    console.log("criar um novo usuario no servidor ...");
+                                    var request = {
+                                        method: 'POST',
+                                        url: 'http://10.0.0.105:8080/api/cadastrarUsuarioByFacebook',
+                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                        transformRequest: function(obj) {
+                                            var str = [];
+                                            for(var p in obj)
+                                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                            return str.join("&");
+                                        },
+                                        data: {
+                                            nome: $localStorage.profile.name,  
+                                            email: $localStorage.profile.email
+                                        } 
+                                    }
+                                    $http(request).then(function(data){
+                                        console.log("Novo usuário criado com sucesso!");      
+                                        $location.path("/page1/page2");
+                                    }, function(error){
+                                        console.log(error);
+                                        scope.error = error.data.message;
+                                      
+                                    })
+                                })
+                            }
+                        }
                     })
+
+            }, function(error) {
+                console.log(error);
+                return false;
+            })
+            
         },
     }
 
    return servicos;
-    
-    
-
 }])
 
 .service('CrudService', ['$http', '$cordovaOauth', '$localStorage','$location', function($http, $cordovaOauth, $localStorage, $location) {
   
     var service = {
+
+        find: function(usuario) {
+            var settings = {
+                method: 'GET',
+                url: 'http://10.0.0.105:8080/api/existe',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: { 
+                    email: usuario.email
+                } 
+            }
+            
+            return $http(settings);
+        },
         
         create: function(usuario) {
             var settings = {
@@ -154,6 +214,8 @@ function($http, $cordovaOauth, $localStorage, $location) {
             
             return $http(settings);
         }
+
+        
     }
 
    return service;

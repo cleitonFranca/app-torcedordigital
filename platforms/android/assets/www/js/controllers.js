@@ -21,7 +21,7 @@ function($location, AuthService, $scope, $stateParams, $http, $localStorage, Ace
 
 .controller('profilesTabDefaultPageCtrl', ['$location','AuthService','$scope','$stateParams', 'ProfileService','$http','$localStorage',
 function($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage) {
-    
+   /* 
     $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender, email, location,website,picture,relationship_status", format: "json" }})
                 .then(function(result) {
                     if(result!=null) {
@@ -31,7 +31,7 @@ function($location, AuthService, $scope, $stateParams, ProfileService, $http, $l
             }, function(error) {
                 console.error(error);
             });
-
+    */
              $scope.profileData = $localStorage.profile;
     } 
 
@@ -96,7 +96,8 @@ function ($scope, $stateParams) {
 }])
    
 .controller('loginCtrl', ['$scope', '$stateParams','$location','$localStorage','AuthService','$ionicSideMenuDelegate',
-function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate) {
+'CrudService','$ionicLoading',
+function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate, CrudService, $ionicLoading) {
 
     $scope.usuario = {}
     
@@ -108,15 +109,18 @@ function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSid
     $scope.display = "display:none";
     $scope.displayButton = "display:block";
     
-    if(autenticado === true) {
+    if(autenticado) {
         $location.path("/page1/page2");
     } 
     
     $scope.loginFacebook = function() {
-        autenticado = AuthService.authFacebook();
-        if(autenticado === false) {
-            // criar mensagem de error de login na view
-        }
+       
+        AuthService.authFacebook($scope);
+        $ionicLoading.show({
+            template: 'Aguarde...',
+            duration: 30000
+        });
+        
     }
 
     $scope.loginTorcedor = function() {
