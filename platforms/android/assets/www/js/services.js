@@ -1,9 +1,29 @@
+const SERVIDOR = "http://torcedordigital.com";
+//const SERVIDOR = "http://10.0.0.105:8080";
+
 angular.module('app.services', [])
 
 .factory('BlankFactory', [function(){
 
 }])
 
+.service('RankService',['$http', 
+function($http){
+
+    var service = {
+        rankGeral: function() {
+            var settings = {
+                method: 'GET',
+                url: SERVIDOR+'/api/rank',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'} 
+            }
+            return $http(settings)
+        }
+    }
+
+    return service;
+
+}])
 
 .service('AcessTokem', [function(){
     var access_token =  {
@@ -72,8 +92,8 @@ angular.module('app.services', [])
 
 .service('AuthService', ['$http', '$cordovaOauth', '$localStorage','$location', 
 function($http, $cordovaOauth, $localStorage, $location) {
-    
-    var servicos = {
+
+    var service = {
         /**
         * metodo para verificar se usuario está autenticado
         */
@@ -90,7 +110,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
         authServidor: function(usuario) {
             var settings = {
                 method: 'POST',
-                url: 'http://10.0.0.105:8080/api/login',
+                url: SERVIDOR+'/api/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
@@ -105,35 +125,35 @@ function($http, $cordovaOauth, $localStorage, $location) {
         },
         /**
         * serviço de autenticação no facebook
+        * metodo complexo pois envolve varias etapas ***
         */
-        authFacebook: function(scope) {
-            if($localStorage.hasOwnProperty("accessToken") === true) {
-                return true;
-            }
+        authFacebook: function() {
+            // antenticação do facebook
             $cordovaOauth.facebook("1312201258817812", ["email", "read_stream", "user_website",            
                     "user_location", "user_relationships", "user_posts", "publish_pages", "user_friends", "user_relationship_details", "user_relationships", "user_videos", "pages_messaging", "user_actions.news", "user_actions.video"])
                     .then(function(result) {
                             $localStorage.accessToken = result.access_token;
-                
+                // busca do perfil do usuario no facebook
                 $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessToken, fields: "id, name, gender, email, location, website,picture, relationship_status", format: "json" }})
                     .then(function(r) {
                         if(r!=null) {
                             $localStorage.username = r.data.name;
                             $localStorage.profile = r.data;
-
+                            // busca do perfil no servidor (Torcedor Digital)
                             if($localStorage.profile.email) {
                                 var settings = {
                                     method: 'GET',
-                                    url: 'http://10.0.0.105:8080/api/existe?email='+$localStorage.profile.email,
+                                    url: SERVIDOR+'/api/existe?email='+$localStorage.profile.email,
                                     headers: {'Content-Type': 'application/x-www-form-urlencoded'} 
                                 }
                                 $http(settings).then(function(data){
                                      $location.path("/page1/page2");
                                 },function(error){
+                                    // caso não exista no servidor criar novo usuario
                                     console.log("criar um novo usuario no servidor ...");
                                     var request = {
                                         method: 'POST',
-                                        url: 'http://10.0.0.105:8080/api/cadastrarUsuarioByFacebook',
+                                        url: SERVIDOR+'/api/cadastrarUsuarioByFacebook',
                                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                                         transformRequest: function(obj) {
                                             var str = [];
@@ -142,7 +162,9 @@ function($http, $cordovaOauth, $localStorage, $location) {
                                             return str.join("&");
                                         },
                                         data: {
-                                            nome: $localStorage.profile.name,  
+                                            nome: $localStorage.profile.name,
+                                            // por enquanto que aws nao libera enviar pro meu email
+                                            //  e-mail destino --> cleiton2281@gmail.com
                                             email: $localStorage.profile.email
                                         } 
                                     }
@@ -151,8 +173,6 @@ function($http, $cordovaOauth, $localStorage, $location) {
                                         $location.path("/page1/page2");
                                     }, function(error){
                                         console.log(error);
-                                        scope.error = error.data.message;
-                                      
                                     })
                                 })
                             }
@@ -161,23 +181,22 @@ function($http, $cordovaOauth, $localStorage, $location) {
 
             }, function(error) {
                 console.log(error);
-                return false;
             })
             
         },
     }
 
-   return servicos;
+   return service;
 }])
 
 .service('CrudService', ['$http', '$cordovaOauth', '$localStorage','$location', function($http, $cordovaOauth, $localStorage, $location) {
-  
+
     var service = {
 
         find: function(usuario) {
             var settings = {
                 method: 'GET',
-                url: 'http://10.0.0.105:8080/api/existe',
+                url: SERVIDOR+'/api/existe',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
@@ -196,7 +215,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
         create: function(usuario) {
             var settings = {
                 method: 'POST',
-                url: 'http://10.0.0.105:8080/api/cadastrarUsuario',
+                url: SERVIDOR+'/api/cadastrarUsuario',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];

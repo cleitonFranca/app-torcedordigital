@@ -62,6 +62,12 @@ angular.module('app.routes', [])
     controller: 'novoUsuarioCtrl'
   })
 
+  .state('ingresso', {
+    url: '/ingresso',
+    templateUrl: 'templates/ingresso.html',
+    controller: 'ingressoCtrl'
+  })
+
   .state('rooms', {
     url: '/rooms',
     templateUrl: 'templates/rooms.html'

@@ -24,9 +24,9 @@ angular.module('app', ['ionic','ngStorage','ngCordova','ngCordovaOauth', 'app.co
               content: "No momento você está sem sinal de internet!",
               okType: "button-energized" 
           }).then(function(result) {
-              if(result) {
+             /* if(result) {
                   ionic.Platform.exitApp();
-              }
+              }*/
           })
       }
     }

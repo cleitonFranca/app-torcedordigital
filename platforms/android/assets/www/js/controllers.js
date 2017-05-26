@@ -1,56 +1,104 @@
 angular.module('app.controllers', [])
 
-.controller('cameraTabDefaultPageCtrl', ['$location','AuthService','$scope','$stateParams','$http','$localStorage','AcessTokem',
-
-function($location, AuthService, $scope, $stateParams, $http, $localStorage, AcessTokem) {
-        
-    AcessTokem.access($localStorage, $http);
-    
-    $http.get("https://graph.facebook.com/v2.9/me/feed?limit=10", { params: { access_token: $localStorage.accessTokenTD,fields: "created_time, description, picture, message, source, name, link, full_picture", format: "json" }})
-        .then(function(result) {
+.controller('cameraTabDefaultPageCtrl', ['$location','AuthService','$scope'
+,'$stateParams','$http','$localStorage','AcessTokem', '$cordovaSocialSharing',
+function($location, AuthService, $scope, $stateParams, $http, $localStorage, AcessTokem, $cordovaSocialSharing) {
+    function buscaFedd() {
+        AcessTokem.access($localStorage, $http);
+        $http.get("https://graph.facebook.com/v2.9/me/feed?limit=10", { params: { access_token: $localStorage.accessTokenTD,fields: "created_time, description, picture, message, source, name, link, full_picture", format: "json" }})
+            .then(function(result) {
                 $scope.feedData = result.data.data;
+                console.log(result.data.data);
                 $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessTokenTD, fields: "picture, name, email", format: "json" }}).then(function(result) {
                     $scope.feedData.myPicture = result.data.picture.data.url;
-                    $location.path("/page1/page2");
                 });
             }, function(error) {
                 console.error(error);
-            });
+            })
+        
+        $location.path("/page1/page2");
     }
+
+    $scope.shareAnywhere = function() {
+        $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "https://www.thepolyglotdeveloper.com");
+    }
+
+    $scope.restartFeed = function() {
+         buscaFedd();
+    }
+
+    buscaFedd();
+}
+
 ])
 
 .controller('profilesTabDefaultPageCtrl', ['$location','AuthService','$scope','$stateParams', 'ProfileService','$http','$localStorage',
 function($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage) {
-   /* 
-    $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessToken, fields: "id,name,gender, email, location,website,picture,relationship_status", format: "json" }})
-                .then(function(result) {
-                    if(result!=null) {
-                        $localStorage.username = result.data.name;
-                        $localStorage.profile = result.data; 
-                    }
-            }, function(error) {
-                console.error(error);
-            });
-    */
              $scope.profileData = $localStorage.profile;
     } 
 
 ])
+
+.controller('ingressoCtrl', ['$location','AuthService','$scope','$stateParams', 'ProfileService','$http','$localStorage',
+function($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage) {
+            $scope.ingresso = $localStorage.ingresso;
+    } 
+
+])
    
-.controller('calendRioDeJogosCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('calendRioDeJogosCtrl', ['$location','$scope','$state', '$stateParams', '$localStorage',
+function ($location, $scope, $state, $stateParams, $localStorage) {
+
+    
+    if($localStorage.ingresso) {
+        $scope.ingresso = true;   
+    }
+
+    $scope.comprar = function(data) {
+        
+        console.log(data);
+        
+        var ingresso = {}
+
+        var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/pontuarIngresso?id="+$localStorage.profile.id+"&amp;size=300x500";
+
+        ingresso.id = data;
+        ingresso.url = qrcode;
+
+        $localStorage.ingresso = ingresso;
+        
+        $scope.ingresso = true;
+
+
+        $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
+    }
+
+
+
+
 
 
 }])
    
-.controller('rankTorcedorDigitalCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+.controller('rankTorcedorDigitalCtrl', ['$state','$scope', '$location', '$stateParams', 'RankService',
+function ($state, $scope, $location, $stateParams, RankService) {
+    
+    function buscaRank() {
+        RankService.rankGeral().then(function(res){
+            $scope.rank = res.data;         
+        }, 
+        function(error){
+            console.error(error);
+        })
+        
+        $location.path("/page1/page4");
+    }
+     
+    $scope.restart = function() {
+       buscaRank();
+    }
 
-
+    buscaRank();
 }])
 
 .controller('novoUsuarioCtrl', ['$scope', '$stateParams', '$location','$localStorage','CrudService',
@@ -65,7 +113,11 @@ function ($scope, $stateParams, $location, $localStorage, CrudService) {
             && usuario.email!=undefined) {      
             
             CrudService.create(usuario).then(function(result){
-                console.log(result);
+                var data = result.data.usuario;
+                data.name = result.data.usuario.nome;
+                $localStorage.username = result.data.usuario.nome;
+                $localStorage.profile = data; 
+                $location.path("/page1/page2");
             }, function(error){
                 console.error(error);
                 $scope.error = error.data.message;
@@ -115,10 +167,10 @@ function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSid
     
     $scope.loginFacebook = function() {
        
-        AuthService.authFacebook($scope);
+        AuthService.authFacebook();
         $ionicLoading.show({
             template: 'Aguarde...',
-            duration: 30000
+            duration: 33000
         });
         
     }
@@ -133,24 +185,19 @@ function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSid
         $scope.displayButton = "display:block";
     }
 
-    $scope.loginSerivor = function(usuario){
+    $scope.loginServidor = function(usuario){
         AuthService.authServidor(usuario).then(function(d){
-         
            var data = d.data.usuario;
            data.name = d.data.usuario.nome;
 
            $localStorage.username = d.data.usuario.nome;
            $localStorage.profile = data; 
-
            $location.path("/page1/page2");
-           
            console.log($scope.data);
         }, function(error){
             console.error(error);
             $scope.error = error.data.message;
         })
-
-        
     }
     
 }])

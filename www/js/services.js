@@ -1,9 +1,29 @@
+const SERVIDOR = "http://torcedordigital.com";
+//const SERVIDOR = "http://10.0.0.105:8080";
+
 angular.module('app.services', [])
 
 .factory('BlankFactory', [function(){
 
 }])
 
+.service('RankService',['$http', 
+function($http){
+
+    var service = {
+        rankGeral: function() {
+            var settings = {
+                method: 'GET',
+                url: SERVIDOR+'/api/rank',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'} 
+            }
+            return $http(settings)
+        }
+    }
+
+    return service;
+
+}])
 
 .service('AcessTokem', [function(){
     var access_token =  {
@@ -72,7 +92,7 @@ angular.module('app.services', [])
 
 .service('AuthService', ['$http', '$cordovaOauth', '$localStorage','$location', 
 function($http, $cordovaOauth, $localStorage, $location) {
-    
+
     var service = {
         /**
         * metodo para verificar se usuario está autenticado
@@ -90,7 +110,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
         authServidor: function(usuario) {
             var settings = {
                 method: 'POST',
-                url: 'http://10.0.0.105:8080/api/login',
+                url: SERVIDOR+'/api/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
@@ -123,7 +143,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
                             if($localStorage.profile.email) {
                                 var settings = {
                                     method: 'GET',
-                                    url: 'http://10.0.0.105:8080/api/existe?email='+$localStorage.profile.email,
+                                    url: SERVIDOR+'/api/existe?email='+$localStorage.profile.email,
                                     headers: {'Content-Type': 'application/x-www-form-urlencoded'} 
                                 }
                                 $http(settings).then(function(data){
@@ -133,7 +153,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
                                     console.log("criar um novo usuario no servidor ...");
                                     var request = {
                                         method: 'POST',
-                                        url: 'http://10.0.0.105:8080/api/cadastrarUsuarioByFacebook',
+                                        url: SERVIDOR+'/api/cadastrarUsuarioByFacebook',
                                         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                                         transformRequest: function(obj) {
                                             var str = [];
@@ -142,7 +162,9 @@ function($http, $cordovaOauth, $localStorage, $location) {
                                             return str.join("&");
                                         },
                                         data: {
-                                            nome: $localStorage.profile.name,  
+                                            nome: $localStorage.profile.name,
+                                            // por enquanto que aws nao libera enviar pro meu email
+                                            //  e-mail destino --> cleiton2281@gmail.com
                                             email: $localStorage.profile.email
                                         } 
                                     }
@@ -168,13 +190,13 @@ function($http, $cordovaOauth, $localStorage, $location) {
 }])
 
 .service('CrudService', ['$http', '$cordovaOauth', '$localStorage','$location', function($http, $cordovaOauth, $localStorage, $location) {
-  
+
     var service = {
 
         find: function(usuario) {
             var settings = {
                 method: 'GET',
-                url: 'http://10.0.0.105:8080/api/existe',
+                url: SERVIDOR+'/api/existe',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
@@ -193,7 +215,7 @@ function($http, $cordovaOauth, $localStorage, $location) {
         create: function(usuario) {
             var settings = {
                 method: 'POST',
-                url: 'http://10.0.0.105:8080/api/cadastrarUsuario',
+                url: SERVIDOR+'/api/cadastrarUsuario',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(obj) {
                     var str = [];
