@@ -8,7 +8,6 @@ function($location, AuthService, $scope, $stateParams, $http, $localStorage, Ace
         $http.get("https://graph.facebook.com/v2.9/me/feed?limit=10", { params: { access_token: $localStorage.accessTokenTD,fields: "created_time, description, picture, message, source, name, link, full_picture", format: "json" }})
             .then(function(result) {
                 $scope.feedData = result.data.data;
-                console.log(result.data.data);
                 $http.get("https://graph.facebook.com/v2.9/me", { params: { access_token: $localStorage.accessTokenTD, fields: "picture, name, email", format: "json" }}).then(function(result) {
                     $scope.feedData.myPicture = result.data.picture.data.url;
                 });
@@ -19,8 +18,8 @@ function($location, AuthService, $scope, $stateParams, $http, $localStorage, Ace
         $location.path("/page1/page2");
     }
 
-    $scope.shareAnywhere = function() {
-        $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "https://www.thepolyglotdeveloper.com");
+    $scope.shareAnywhere = function(data) {
+        $cordovaSocialSharing.share("Postado por: "+$localStorage.username, data.description, data.full_picture, "Link: "+data.link);
     }
 
     $scope.restartFeed = function() {
@@ -60,7 +59,7 @@ function ($location, $scope, $state, $stateParams, $localStorage) {
         
         var ingresso = {}
 
-        var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/pontuarIngresso?id="+$localStorage.profile.id+"&amp;size=300x500";
+        var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/api/pontuarIngresso?id="+$localStorage.profile.id+"&amp;size=300x500";
 
         ingresso.id = data;
         ingresso.url = qrcode;
