@@ -62,6 +62,18 @@ angular.module('app.routes', [])
     controller: 'novoUsuarioCtrl'
   })
 
+  .state('recSenha', {
+    url: '/recSenha',
+    templateUrl: 'templates/formRecSenha.html',
+    controller: 'loginCtrl'
+  })
+
+  .state('convite', {
+    url: '/convite',
+    templateUrl: 'templates/formConvite.html',
+    controller: 'conviteCtrl'
+  })
+
   .state('ingresso', {
     url: '/ingresso',
     templateUrl: 'templates/ingresso.html',

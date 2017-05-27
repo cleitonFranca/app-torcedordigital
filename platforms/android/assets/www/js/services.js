@@ -1,5 +1,5 @@
-const SERVIDOR = "http://torcedordigital.com";
-//const SERVIDOR = "http://10.0.0.105:8080";
+//const SERVIDOR = "http://torcedordigital.com";
+const SERVIDOR = "http://10.0.0.105:8080";
 
 angular.module('app.services', [])
 
@@ -192,6 +192,30 @@ function($http, $cordovaOauth, $localStorage, $location) {
 .service('CrudService', ['$http', '$cordovaOauth', '$localStorage','$location', function($http, $cordovaOauth, $localStorage, $location) {
 
     var service = {
+        // http://localhost:8080/api/convite?convidado=Cleiton&emailConvidado=cleiton2281@gmail.com&usuarioNome=Teste
+        convite: function(convidado) {
+
+
+console.log(convidado);
+
+            var settings = {
+                method: 'GET',
+                url: SERVIDOR+'/api/convite?convidado='+convidado.nome+"&emailConvidado="+convidado.email+"&usuarioNome="+$localStorage.profile.name,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }
+            
+            return $http(settings);
+        },
+
+        recSenha: function(usuario) {
+            var settings = {
+                method: 'GET',
+                url: SERVIDOR+'/api/recuperarSenha?email='+usuario.email,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }
+            
+            return $http(settings);
+        },
 
         find: function(usuario) {
             var settings = {

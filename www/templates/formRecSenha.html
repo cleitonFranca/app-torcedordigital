@@ -1,0 +1,22 @@
+<ion-view title="Recuperar Senha">
+
+  <ion-content class="has-header" padding="true">
+    <center style="color:tomato">{{error}}</center>
+    <center style="color:green">{{success}}</center>
+    
+    <div style="height: 10px;" class="spacer"></div>
+
+    <form class="list" id="login-form1">
+      <div style="height: 5px;" class="spacer"></div>
+      <label id="login-input1" class="item item-input">
+          <span class="input-label">E-mail</span>
+          <input placeholder="" type="text" ng-model="usuario.email" name="email">
+        </label>
+      </ion-list>
+
+      <div class="padding">
+        <button ng-click="recSenha(usuario)" class="button button-block icon-left  button-energized">Recuperar</button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
