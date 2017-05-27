@@ -206,28 +206,28 @@ angular.module('app.controllers', [])
 
         }])
 
-        .controller('conviteCtrl', ['$scope', '$stateParams', '$location', '$localStorage', 'AuthService', '$ionicSideMenuDelegate',
-        'CrudService', '$ionicLoading', function($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate,
-        CrudService, $ionicLoading){
+    .controller('conviteCtrl', ['$scope', '$stateParams', '$location', '$localStorage', 'AuthService', '$ionicSideMenuDelegate',
+        'CrudService', '$ionicLoading', function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate,
+            CrudService, $ionicLoading) {
 
             $convidado = {}
 
-            $scope.enviarConvite = function(convidado) {
+            $scope.enviarConvite = function (convidado) {
                 $ionicLoading.show();
-                
-                if(convidado) {
-                    CrudService.convite(convidado).then(function(sucess){
+
+                if (convidado) {
+                    CrudService.convite(convidado).then(function (sucess) {
                         $ionicLoading.hide();
                         $scope.success = sucess.data.message;
                         $scope.error = null;
                         $scope.convidado = {}
-                    }, function(error){
+                    }, function (error) {
                         console.error(error);
                         $ionicLoading.hide();
                         $scope.error = error.data.message;
                         $scope.success = null;
                         $scope.convidado = {}
-                    
+
                     })
 
                 } else {
@@ -236,10 +236,6 @@ angular.module('app.controllers', [])
 
                 }
 
-
-
-                console.log($localStorage.profile.name);
-                console.log(convidado);
             }
 
         }])
