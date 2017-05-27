@@ -1,13 +1,13 @@
 <ion-view style="" id="page4" title="Rank Torcedor Digital">
   
   <ion-content class="has-header" padding="true">
-    <div style="" id="rankTorcedorDigital-list-item-container1" class="item item-body">
+    <div style="" id="rankTorcedorDigital-list-item-container1" class="item item-body" ng-repeat="data in rank">
       <!--<div class="show-list-numbers-and-dots" id="rankTorcedorDigital-markdown2">
         <p style="margin-top:0px;color:#000000;">Rank atualizado
           <strong>11-04-2017</strong>
         </p>
       </div>-->
-      <ion-list id="rankTorcedorDigital-list2" ng-repeat="data in rank">
+      <ion-list id="rankTorcedorDigital-list2">
         <ion-item style="" id="rankTorcedorDigital-list-item1" class="item-avatar">
             <img ng-src="">
             <h2>{{data.nome}}</h2>
