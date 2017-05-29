@@ -1,5 +1,5 @@
-//const SERVIDOR = "http://torcedordigital.com";
-const SERVIDOR = "http://10.0.0.105:8080";
+const SERVIDOR = "http://torcedordigital.com";
+//const SERVIDOR = "http://10.0.0.105:8080";
 
 angular.module('app.services', [])
 
@@ -102,10 +102,12 @@ angular.module('app.services', [])
                 * metodo para verificar se usuario está autenticado
                 */
                 authenticated: function () {
-                    if ($localStorage.hasOwnProperty("profile") === true) {
-                        return true;
+                    var settings = {
+                        method: 'GET',
+                        url: SERVIDOR + '/api/existe?email=' + $localStorage.profile.email,
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                     }
-                    return false;
+                    return $http(settings);
                 },
 
                 /**
@@ -239,7 +241,7 @@ angular.module('app.services', [])
             create: function (usuario) {
                 var settings = {
                     method: 'POST',
-                    url: SERVIDOR + '/api/cadastrarUsuario',
+                    url: SERVIDOR + '/api/cadastrarUsuarioByFacebook',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     transformRequest: function (obj) {
                         var str = [];
@@ -249,9 +251,7 @@ angular.module('app.services', [])
                     },
                     data: {
                         nome: usuario.nome,
-                        sobreNome: usuario.sobreNome,
-                        email: usuario.email,
-                        senha: usuario.senha
+                        email: usuario.email
                     }
                 }
 

@@ -140,17 +140,35 @@ angular.module('app.controllers', [])
         function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate, CrudService, $ionicLoading) {
 
             $scope.usuario = {}
+            $scope.display = "display:none";
+            $scope.displayButton = "display:block";
 
             // desabilitando sideBar
             $ionicSideMenuDelegate.canDragContent(false);
 
-            var autenticado = AuthService.authenticated();
+            if ($localStorage.hasOwnProperty("profile") === true) {
+                AuthService.authenticated().then(function (data) {
+                    $location.path("/page1/page2");
+                }, function (error) {
+                    var novoUsuario = {
+                        nome: $localStorage.profile.name,
+                        email: $localStorage.profile.email
+                    }
+                     $ionicLoading.show({
+                        template: 'Atualizando informações do usuário...'
+                    })
+                    CrudService.create(novoUsuario).then(function (success) {
+                        $ionicLoading.hide();
+                        $location.path("/page1/page2");
+                    }, function (error) {
+                        $ionicLoading.hide();
+                        alert("Ops... Houve um error, por favor, verifique sua conexão e tente novamente.");
+                        console.error(error);
+                    })
+                })
 
-            $scope.display = "display:none";
-            $scope.displayButton = "display:block";
-
-            if (autenticado) {
-                $location.path("/page1/page2");
+            } else {
+                 $location.path("/page5");
             }
 
             $scope.loginFacebook = function () {
