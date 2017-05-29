@@ -174,8 +174,9 @@ angular.module('app.controllers', [])
             $scope.loginFacebook = function () {
 
                 AuthService.authFacebook();
+                
                 $ionicLoading.show({
-                    template: 'Aguarde...',
+                    template: 'Aguarde, atualizando informações...',
                     duration: 33000
                 });
 
@@ -199,7 +200,7 @@ angular.module('app.controllers', [])
                     $localStorage.username = d.data.usuario.nome;
                     $localStorage.profile = data;
                     $location.path("/page1/page2");
-                    console.log($scope.data);
+                    
                 }, function (error) {
                     console.error(error);
                     $scope.error = error.data.message;
