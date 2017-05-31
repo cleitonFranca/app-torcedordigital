@@ -80,6 +80,12 @@ angular.module('app.routes', [])
     controller: 'ingressoCtrl'
   })
 
+  .state('checkout', {
+    url: '/checkout',
+    templateUrl: 'templates/checkout.html',
+    controller: 'calendRioDeJogosCtrl'
+  })
+
   .state('rooms', {
     url: '/rooms',
     templateUrl: 'templates/rooms.html'

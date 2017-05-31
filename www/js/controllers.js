@@ -46,30 +46,46 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage',
-        function ($location, $scope, $state, $stateParams, $localStorage) {
+    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService',
+        function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService) {
+            $scope.usuario = {
+                nome: $localStorage.profile.name,
+                email: $localStorage.profile.email
+            }
+            CalendarioService.calendario().then(
+                function (success) {
+                    $scope.calendario = success.data;
+                }, function (error) {
+                    console.error(error);
+                });
 
-
-            if ($localStorage.ingresso) {
-                $scope.ingresso = true;
+            $scope.checkout = function () {
+                $state.go("checkout");
             }
 
-            $scope.comprar = function (data) {
 
-                var ingresso = {}
-
-                var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/api/pontuarIngresso?id=" + $localStorage.profile.id + "&amp;size=300x500";
-
-                ingresso.id = data;
-                ingresso.url = qrcode;
-
-                $localStorage.ingresso = ingresso;
-
-                $scope.ingresso = true;
-
-
-                $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
-            }
+            /*
+     
+                 if ($localStorage.ingresso) {
+                     $scope.ingresso = true;
+                 }
+     
+                 $scope.comprar = function (data) {
+     
+                     var ingresso = {}
+     
+                     var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/api/pontuarIngresso?id=" + $localStorage.profile.id + "&amp;size=300x500";
+     
+                     ingresso.id = data;
+                     ingresso.url = qrcode;
+     
+                     $localStorage.ingresso = ingresso;
+     
+                     $scope.ingresso = true;
+     
+     
+                     $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
+                 }*/
 
         }])
 
@@ -154,7 +170,7 @@ angular.module('app.controllers', [])
                         nome: $localStorage.profile.name,
                         email: $localStorage.profile.email
                     }
-                     $ionicLoading.show({
+                    $ionicLoading.show({
                         template: 'Atualizando informações do usuário...'
                     })
                     CrudService.create(novoUsuario).then(function (success) {
@@ -168,13 +184,13 @@ angular.module('app.controllers', [])
                 })
 
             } else {
-                 $location.path("/page5");
+                $location.path("/page5");
             }
 
             $scope.loginFacebook = function () {
 
                 AuthService.authFacebook();
-                
+
                 $ionicLoading.show({
                     template: 'Aguarde, atualizando informações...',
                     duration: 33000
@@ -200,7 +216,7 @@ angular.module('app.controllers', [])
                     $localStorage.username = d.data.usuario.nome;
                     $localStorage.profile = data;
                     $location.path("/page1/page2");
-                    
+
                 }, function (error) {
                     console.error(error);
                     $scope.error = error.data.message;

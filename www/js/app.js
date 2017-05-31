@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'ngStorage', 'ngCordova', 'ngCordovaOauth', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'app.services2', 'LocalStorageModule', 'btford.socket-io', 'angularMoment'])
+angular.module('app', ['ionic', 'ngStorage', 'ngCordova', 'ngCordovaOauth', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'app.services2', 'app.serviceCalendario', 'LocalStorageModule', 'btford.socket-io', 'angularMoment'])
 
   .config(function ($ionicConfigProvider, $sceDelegateProvider) {
 

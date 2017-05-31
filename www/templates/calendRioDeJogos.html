@@ -1,17 +1,19 @@
 <ion-view style="" id="page3" title="Calendário de Jogos">
   <ion-content class="has-header" padding="true">
-    <div style="" id="calendRioDeJogos-list-item-container2" class="item item-body">
+    <div style="" ng-repeat="data in calendario" id="calendRioDeJogos-list-item-container2" class="item item-body">
       <div class="show-list-numbers-and-dots" id="calendRioDeJogos-markdown4">
-        <p style="margin-top:0px;color:#000000;">Dias de jogos e localização</p>
       </div>
       <ion-list id="calendRioDeJogos-list5">
-        <ion-item style="" id="calendRioDeJogos-list-item5" class="item-thumbnail-left">
-          <h2>ABC vs America</h2>
+       
+        <ion-item id="calendRioDeJogos-list-item5" class="">
+          <center><h2>{{data.timeCasa}} vs {{data.timeVisitante}}</h2></center>
         </ion-item>
         <label id="calendRioDeJogos-textarea1" class="item item-input">
-          <span class="input-label">Dia: 15-05-2017 - Horario: 15:45</span><textarea placeholder=""></textarea></label>
+          <span class="input-label">Data/horário: {{data.dataInicio}}</span></label>
+          <label id="calendRioDeJogos-textarea1" class="item item-input">
+          <span class="input-label">Local: </span></label>
       </ion-list>
-      <button value="1" class="button button-positive  button-block" ng-hide="ingresso"  id="calendRioDeJogos-button3" ng-click="comprar(1)">Compra ingresso</button>
+      <button value="1" class="button button-positive  button-block" ng-hide="ingresso"  id="calendRioDeJogos-button3" ng-click="checkout()">Compra ingresso</button>
       <a class="button button-balanced  button-block" ng-show="ingresso" id="" ng-href="#/ingresso">Ingresso</a>
     </div>
     <!--<div style="" id="calendRioDeJogos-list-item-container3" class="item item-body">
