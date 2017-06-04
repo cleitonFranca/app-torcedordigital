@@ -13,7 +13,7 @@ angular.module('app.controllers', [])
                             $scope.feedData.myPicture = result.data.picture.data.url;
                         });
                     }, function (error) {
-                        console.error(error);
+                        console.log(error);
                     })
 
                 $location.path("/page1/page2");
@@ -56,7 +56,7 @@ angular.module('app.controllers', [])
                 function (success) {
                     $scope.calendario = success.data;
                 }, function (error) {
-                    console.error(error);
+                    console.log(error);
                 });
 
             $scope.checkout = function () {
@@ -97,7 +97,7 @@ angular.module('app.controllers', [])
                     $scope.rank = res.data;
                 },
                     function (error) {
-                        console.error(error);
+                        console.log(error);
                     })
 
                 $location.path("/page1/page4");
@@ -128,7 +128,7 @@ angular.module('app.controllers', [])
                         $localStorage.profile = data;
                         $location.path("/page1/page2");
                     }, function (error) {
-                        console.error(error);
+                        console.log(error.data.message);
                         $scope.error = error.data.message;
                     })
 
@@ -178,8 +178,7 @@ angular.module('app.controllers', [])
                         $location.path("/page1/page2");
                     }, function (error) {
                         $ionicLoading.hide();
-                        alert("Ops... Houve um error, por favor, verifique sua conexão e tente novamente.");
-                        console.error(error);
+                        console.log(error);
                     })
                 })
 
@@ -218,7 +217,7 @@ angular.module('app.controllers', [])
                     $location.path("/page1/page2");
 
                 }, function (error) {
-                    console.error(error);
+                    console.log(error);
                     $scope.error = error.data.message;
                 })
             }
@@ -231,7 +230,7 @@ angular.module('app.controllers', [])
                     $scope.error = null;
                     $scope.usuario = {}
                 }, function (error) {
-                    console.error(error);
+                    console.log(error);
                     $ionicLoading.hide();
                     $scope.error = error.data.message;
                     $scope.success = null;
@@ -257,7 +256,7 @@ angular.module('app.controllers', [])
                         $scope.error = null;
                         $scope.convidado = {}
                     }, function (error) {
-                        console.error(error);
+                        console.log(error);
                         $ionicLoading.hide();
                         $scope.error = error.data.message;
                         $scope.success = null;
