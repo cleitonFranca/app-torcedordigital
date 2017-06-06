@@ -48,10 +48,13 @@ angular.module('app.controllers', [])
 
     .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService',
         function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService) {
+
             $scope.usuario = {
                 nome: $localStorage.profile.name,
                 email: $localStorage.profile.email
             }
+
+
             CalendarioService.calendario().then(
                 function (success) {
                     $scope.calendario = success.data;
@@ -61,6 +64,24 @@ angular.module('app.controllers', [])
 
             $scope.checkout = function () {
                 $state.go("checkout");
+            }
+
+            $scope.comprar = function (data) {
+                // ver tratamento de (validação do formulario)
+                if (data) {
+                   
+                    CalendarioService.compraIngresso(data).then(
+                        function(success) {
+                            console.log(success);
+                        }, function(error) {
+                            console.log(error);
+                        }
+                    )
+                    
+                } else {
+                    console.log("Ops...")
+                }
+
             }
 
 

@@ -7,7 +7,7 @@
         }
     </style>
     <ion-content class="has-header" padding="true">
-        <div class="list">
+        <div class="list" >
 
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Nome</span>
@@ -19,58 +19,58 @@
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Telefone/Celular</span>
-                    <input type="text" placeholder="84 999999999">
+                    <input type="text" placeholder="84 999999999" ng-model="usuario.telefone">
                 </label>
 
             <hr class="legend" />
             <label class="item item-input item-stacked-label">
                     <span class="input-label">CEP</span>
-                    <input type="number" placeholder="Ex. 59150000">
+                    <input type="number" placeholder="Ex. 59150000" ng-model="usuario.cep">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Estado</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. RN" ng-model="usuario.estado">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Cidade</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. Natal" ng-model="usuario.cidade">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Bairro</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. Candelaria" ng-model="usuario.bairro">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Logradouro</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. Rua do Açu" ng-model="usuario.logradouro">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Complemento</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. Bl. 20 apto 202" ng-model="usuario.complemento">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Número</span>
-                    <input type="text" placeholder="Ex. 59150000">
+                    <input type="text" placeholder="Ex. 591" ng-model="usuario.numero">
                 </label>
 
             <hr class="legend" />
              <label class="item item-input item-stacked-label">
                     <span class="input-label">Bandeira</span>
-                    <input type="text" >
+                    <input type="text" placeholder="Visa" ng-model="usuario.bandeira">
                 </label>
                  <label class="item item-input item-stacked-label">
                     <span class="input-label">Número Cartao</span>
-                    <input type="number" placeholder="99999999999">
+                    <input type="number" placeholder="Ex. 99999999999" ng-model="usuario.numero_cartao">
                 </label>
              <label class="item item-input item-stacked-label">
                     <span class="input-label">Código</span>
-                    <input type="number" >
+                    <input type="number" placeholder="Ex. 123" ng-model="usuario.codigo">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Quantidade</span>
-                    <input type="number" >
+                    <input type="number" ng-model="usuario.quantidade">
                 </label>
         </div>
-        <button class="button button-block button-energized">Comprar</button>
+        <button class="button button-block button-energized" ng-click="comprar(usuario)">Comprar</button>
     </ion-content>
 
 </ion-view>
