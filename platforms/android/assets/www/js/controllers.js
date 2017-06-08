@@ -46,14 +46,25 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService',
-        function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService) {
+    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService', '$ionicPopup',
+        function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService, $ionicPopup) {
 
             $scope.usuario = {
                 nome: $localStorage.profile.name,
-                email: $localStorage.profile.email
+                email: $localStorage.profile.email,
+                telefone: null,
+                cep: null,
+                estado: null,
+                cidade: null,
+                bairro: null,
+                logradouro: null,
+                complemento: null,
+                numero: null,
+                bandeira: null,
+                numero_cartao: null,
+                codigo: null,
+                quantidade: null
             }
-
 
             CalendarioService.calendario().then(
                 function (success) {
@@ -67,19 +78,32 @@ angular.module('app.controllers', [])
             }
 
             $scope.comprar = function (data) {
-                // ver tratamento de (validação do formulario)
-                if (data) {
-                   
+                // Validação dos campos
+                var campos = function () {
+                    // Total de 14 campos, para a função retornar verdadeiro 
+                    // todos deverão estar preenchidos
+                    var a = 0;
+                    var e = 0;
+                    for (var key in data) {
+                        if (data[key] == null) {
+                            e +=1;
+                        } else {
+                            a +=1;
+                        }
+                    }
+                    return a==14 && a>e;
+                }
+               
+                if (campos()) {
                     CalendarioService.compraIngresso(data).then(
-                        function(success) {
-                            console.log(sucess);
-                        }, function(error) {
+                        function (success) {
+                            console.log(success);
+                        }, function (error) {
                             console.log(error);
                         }
                     )
-                    
                 } else {
-                    console.log("Ops...")
+                    $ionicPopup.alert("Há campos obrigatórios não preenchidos!")
                 }
 
             }
