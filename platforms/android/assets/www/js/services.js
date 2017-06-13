@@ -114,6 +114,7 @@ angular.module('app.services', [])
                 * servico de autenticação no servidor
                 */
                 authServidor: function (usuario) {
+
                     var settings = {
                         method: 'POST',
                         url: SERVIDOR + '/api/login',
@@ -233,6 +234,15 @@ angular.module('app.services', [])
                     data: {
                         email: usuario.email
                     }
+                }
+
+                return $http(settings);
+            },
+            pontuar: function (email) {
+                var settings = {
+                    method: 'GET',
+                    url: SERVIDOR + '/api/pontuarPorConvite?email='+email,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }
 
                 return $http(settings);

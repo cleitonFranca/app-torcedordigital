@@ -1,8 +1,8 @@
 angular.module('app.controllers', [])
 
     .controller('cameraTabDefaultPageCtrl', ['$location', 'AuthService', '$scope'
-        , '$stateParams', '$http', '$localStorage', 'AcessTokem', '$cordovaSocialSharing',
-        function ($location, AuthService, $scope, $stateParams, $http, $localStorage, AcessTokem, $cordovaSocialSharing) {
+        , '$stateParams', '$http', '$localStorage', 'AcessTokem', '$cordovaSocialSharing', 'CrudService',
+        function ($location, AuthService, $scope, $stateParams, $http, $localStorage, AcessTokem, $cordovaSocialSharing, CrudService) {
 
             function buscaFedd() {
                 AcessTokem.access($localStorage, $http);
@@ -20,7 +20,17 @@ angular.module('app.controllers', [])
             }
 
             $scope.shareAnywhere = function (data) {
-                $cordovaSocialSharing.share("Postado por: " + $localStorage.username, data.description, data.full_picture, "Link: " + data.link);
+                $cordovaSocialSharing.share("Torcedor Digital", data.description, data.full_picture, data.link);
+
+                var compartilhar = $localStorage.profile.email != null;
+                if (compartilhar) {
+                    CrudService.pontuar($localStorage.profile.email).then(
+                        function (success) {
+                            console.log(success);
+                        }, function (error) {
+                            console.log(error);
+                        })
+                }
             }
 
             $scope.restartFeed = function () {
@@ -49,23 +59,6 @@ angular.module('app.controllers', [])
     .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService', '$ionicPopup',
         function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService, $ionicPopup) {
 
-            $scope.usuario = {
-                nome: $localStorage.profile.name,
-                email: $localStorage.profile.email,
-                telefone: null,
-                cep: null,
-                estado: null,
-                cidade: null,
-                bairro: null,
-                logradouro: null,
-                complemento: null,
-                numero: null,
-                bandeira: null,
-                numero_cartao: null,
-                codigo: null,
-                quantidade: null
-            }
-
             CalendarioService.calendario().then(
                 function (success) {
                     $scope.calendario = success.data;
@@ -73,9 +66,31 @@ angular.module('app.controllers', [])
                     console.log(error);
                 });
 
-            $scope.checkout = function () {
+
+            $scope.checkout = function (data) {
+                $localStorage.id_jogo = data.id;
                 $state.go("checkout");
             }
+           
+            $scope.usuario = {
+                    nome: $localStorage.profile.name,
+                    email: $localStorage.profile.email,
+                    telefone: null,
+                    cep: null,
+                    estado: null,
+                    cidade: null,
+                    bairro: null,
+                    logradouro: null,
+                    complemento: null,
+                    numero: null,
+                    bandeira: null,
+                    numero_cartao: null,
+                    codigo: null,
+                    quantidade: null,
+                    id_jogo: $localStorage.id_jogo
+
+                }
+           
 
             $scope.comprar = function (data) {
                 // Validação dos campos
@@ -86,14 +101,14 @@ angular.module('app.controllers', [])
                     var e = 0;
                     for (var key in data) {
                         if (data[key] == null) {
-                            e +=1;
+                            e += 1;
                         } else {
-                            a +=1;
+                            a += 1;
                         }
-                    }
-                    return a==14 && a>e;
+                    } 
+                    return a == 16;
                 }
-               
+
                 if (campos()) {
                     CalendarioService.compraIngresso(data).then(
                         function (success) {
@@ -189,10 +204,8 @@ angular.module('app.controllers', [])
 
         }])
 
-    .controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-        // You can include any angular dependencies as parameters for this function
-        // TIP: Access Route Parameters for your page via $stateParams.parameterName
-        function ($scope, $stateParams) {
+    .controller('menuCtrl', ['$scope', '$stateParams', '$cordovaSocialSharing', '$localStorage', 'CrudService',
+        function ($scope, $stateParams, $cordovaSocialSharing, $localStorage, CrudService) {
 
             $scope.exit = function () {
                 ionic.Platform.exitApp();
@@ -241,7 +254,7 @@ angular.module('app.controllers', [])
 
                 $ionicLoading.show({
                     template: 'Aguarde, atualizando informações...',
-                    duration: 33000
+                    duration: 5000
                 });
 
             }
@@ -290,36 +303,44 @@ angular.module('app.controllers', [])
         }])
 
     .controller('conviteCtrl', ['$scope', '$stateParams', '$location', '$localStorage', 'AuthService', '$ionicSideMenuDelegate',
-        'CrudService', '$ionicLoading', function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate,
-            CrudService, $ionicLoading) {
+        'CrudService', '$ionicLoading', '$cordovaSocialSharing', 'CalendarioService', function ($scope, $stateParams, $location, $localStorage, AuthService, $ionicSideMenuDelegate,
+            CrudService, $ionicLoading, $cordovaSocialSharing, CalendarioService) {
 
-            $convidado = {}
+            $scope.shareAnywhere = function (data) {
 
-            $scope.enviarConvite = function (convidado) {
-                $ionicLoading.show();
-
-                if (convidado) {
-                    CrudService.convite(convidado).then(function (sucess) {
-                        $ionicLoading.hide();
-                        $scope.success = sucess.data.message;
-                        $scope.error = null;
-                        $scope.convidado = {}
-                    }, function (error) {
-                        console.log(error);
-                        $ionicLoading.hide();
-                        $scope.error = error.data.message;
-                        $scope.success = null;
-                        $scope.convidado = {}
-
-                    })
-
-                } else {
-                    $ionicLoading.hide();
-                    $scope.error = "Parâmetros obriatórios não preenchidos!";
-
+                $cordovaSocialSharing.share("Venha fazer parte dessa torcida", "Convite Torcedor Digital", "https://scontent-gru2-1.xx.fbcdn.net/v/t1.0-9/18268178_121789138375818_1794909317763594116_n.jpg?oh=8c301b22e7296ca8250e9a7fd8da1c63&oe=59A04910", "www.torcedordigital.com");
+                var compartilhar = $localStorage.profile.email != null;
+                if (compartilhar) {
+                    CrudService.pontuar($localStorage.profile.email).then(
+                        function (success) {
+                            console.log(success);
+                        }, function (error) {
+                            console.log(error);
+                        })
                 }
+            }
+
+            $scope.convidarParaJogo = function (data) {
+
+                $cordovaSocialSharing.share("Vamos assistir esse jogaço! " + data.timeCasa + " X " + data.timeVisitante + " data: " + data.dataInicio + " Local: Arena das Dunas", data.timeCasa + " X " + data.timeVisitante + " data: " + data.dataInicio + " Local: Arena das Dunas", "https://scontent-gru2-1.xx.fbcdn.net/v/t1.0-9/18268178_121789138375818_1794909317763594116_n.jpg?oh=8c301b22e7296ca8250e9a7fd8da1c63&oe=59A04910", "Compra já o seu ingresso: www.torcedordigital.com");
+                var compartilhar = $localStorage.profile.email != null;
+                /*if (compartilhar) {
+                    CrudService.pontuar($localStorage.profile.email).then(
+                        function (success) {
+                            console.log(success);
+                        }, function (error) {
+                            console.log(error);
+                        })
+                }*/
 
             }
+
+            CalendarioService.calendario().then(
+                function (success) {
+                    $scope.calendario = success.data;
+                }, function (error) {
+                    console.log(error);
+                });
 
         }])
 

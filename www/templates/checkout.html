@@ -11,11 +11,11 @@
 
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Nome</span>
-                    <input type="text" placeholder="Ex. John" value="{{usuario.nome}}">
+                    <input type="text" placeholder="Ex. John" ng-model="usuario.nome">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">E-mail</span>
-                    <input type="text" placeholder="Ex. else@placemarket.com" value="{{usuario.email}}">
+                    <input type="text" placeholder="Ex. else@placemarket.com" ng-model="usuario.email">
                 </label>
             <label class="item item-input item-stacked-label">
                     <span class="input-label">Telefone/Celular</span>
@@ -60,6 +60,10 @@
                  <label class="item item-input item-stacked-label">
                     <span class="input-label">Número Cartao</span>
                     <input type="number" placeholder="Ex. 99999999999" ng-model="usuario.numero_cartao">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Data Validade</span>
+                    <input type="number" placeholder="Ex. 99999999999" ng-model="usuario.validade">
                 </label>
              <label class="item item-input item-stacked-label">
                     <span class="input-label">Código</span>
