@@ -127,8 +127,9 @@ angular.module('app.controllers', [])
 
             }
 
-
             /*
+
+                ver depois como proceder com isso!!!!
      
                  if ($localStorage.ingresso) {
                      $scope.ingresso = true;
@@ -150,7 +151,6 @@ angular.module('app.controllers', [])
      
                      $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
                  }*/
-
         }])
 
     .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$stateParams', 'RankService',
