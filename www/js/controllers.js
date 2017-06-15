@@ -71,26 +71,26 @@ angular.module('app.controllers', [])
                 $localStorage.id_jogo = data.id;
                 $state.go("checkout");
             }
-           
-            $scope.usuario = {
-                    nome: $localStorage.profile.name,
-                    email: $localStorage.profile.email,
-                    telefone: null,
-                    cep: null,
-                    estado: null,
-                    cidade: null,
-                    bairro: null,
-                    logradouro: null,
-                    complemento: null,
-                    numero: null,
-                    bandeira: null,
-                    numero_cartao: null,
-                    codigo: null,
-                    quantidade: null,
-                    id_jogo: $localStorage.id_jogo
 
-                }
-           
+            $scope.usuario = {
+                nome: $localStorage.profile.name,
+                email: $localStorage.profile.email,
+                telefone: null,
+                cep: null,
+                estado: null,
+                cidade: null,
+                bairro: null,
+                logradouro: null,
+                complemento: null,
+                numero: null,
+                bandeira: null,
+                numero_cartao: null,
+                codigo: null,
+                quantidade: null,
+                id_jogo: $localStorage.id_jogo
+
+            }
+
 
             $scope.comprar = function (data) {
                 // Validação dos campos
@@ -105,7 +105,7 @@ angular.module('app.controllers', [])
                         } else {
                             a += 1;
                         }
-                    } 
+                    }
                     return a == 16;
                 }
 
