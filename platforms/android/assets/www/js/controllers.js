@@ -66,34 +66,39 @@ angular.module('app.controllers', [])
                     console.log(error);
                 });
 
-
             $scope.checkout = function (data) {
                 $localStorage.id_jogo = data.id;
                 $state.go("checkout");
             }
-           
-            $scope.usuario = {
-                    nome: $localStorage.profile.name,
-                    email: $localStorage.profile.email,
-                    telefone: null,
-                    cep: null,
-                    estado: null,
-                    cidade: null,
-                    bairro: null,
-                    logradouro: null,
-                    complemento: null,
-                    numero: null,
-                    bandeira: null,
-                    numero_cartao: null,
-                    codigo: null,
-                    quantidade: null,
-                    id_jogo: $localStorage.id_jogo
 
-                }
-           
+            $scope.usuario = {
+                nome: $localStorage.profile.name,
+                email: $localStorage.profile.email,
+                telefone: null,
+                cep: null,
+                estado: null,
+                cidade: null,
+                bairro: null,
+                logradouro: null,
+                complemento: null,
+                numero: null,
+                bandeira: null,
+                numero_cartao: null,
+                codigo: null,
+                quantidade: null,
+                validade: null,
+                id_jogo: $localStorage.id_jogo
+
+            }
+
 
             $scope.comprar = function (data) {
                 // Validação dos campos
+
+                if (data.complemento == null) {
+                    data.complemento = " ";
+                }
+
                 var campos = function () {
                     // Total de 14 campos, para a função retornar verdadeiro 
                     // todos deverão estar preenchidos
@@ -105,7 +110,7 @@ angular.module('app.controllers', [])
                         } else {
                             a += 1;
                         }
-                    } 
+                    }
                     return a == 16;
                 }
 
@@ -127,8 +132,9 @@ angular.module('app.controllers', [])
 
             }
 
-
             /*
+
+                ver depois como proceder com isso!!!!
      
                  if ($localStorage.ingresso) {
                      $scope.ingresso = true;
@@ -150,7 +156,6 @@ angular.module('app.controllers', [])
      
                      $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
                  }*/
-
         }])
 
     .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$stateParams', 'RankService',

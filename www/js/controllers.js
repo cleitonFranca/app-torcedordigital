@@ -66,7 +66,6 @@ angular.module('app.controllers', [])
                     console.log(error);
                 });
 
-
             $scope.checkout = function (data) {
                 $localStorage.id_jogo = data.id;
                 $state.go("checkout");
@@ -87,6 +86,7 @@ angular.module('app.controllers', [])
                 numero_cartao: null,
                 codigo: null,
                 quantidade: null,
+                validade: null,
                 id_jogo: $localStorage.id_jogo
 
             }
@@ -94,6 +94,11 @@ angular.module('app.controllers', [])
 
             $scope.comprar = function (data) {
                 // Validação dos campos
+
+                if (data.complemento == null) {
+                    data.complemento = " ";
+                }
+
                 var campos = function () {
                     // Total de 14 campos, para a função retornar verdadeiro 
                     // todos deverão estar preenchidos

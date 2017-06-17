@@ -8,10 +8,7 @@
 angular.module('app', ['ionic', 'ngStorage', 'ngCordova', 'ngCordovaOauth', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'app.services2', 'app.serviceCalendario', 'LocalStorageModule', 'btford.socket-io', 'angularMoment'])
 
   .config(function ($ionicConfigProvider, $sceDelegateProvider) {
-
-
     $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
-
   })
 
   .run(function ($ionicPlatform, $ionicPopup) {
