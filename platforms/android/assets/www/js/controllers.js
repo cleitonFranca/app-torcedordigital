@@ -56,12 +56,31 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService', '$ionicPopup',
-        function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService, $ionicPopup) {
+    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', '$ionicLoading', 'CalendarioService', '$ionicPopup',
+        function ($location, $scope, $state, $stateParams, $localStorage, $ionicLoading, CalendarioService, $ionicPopup) {
 
             CalendarioService.calendario().then(
                 function (success) {
                     $scope.calendario = success.data;
+                    var hoje = new Date();
+                    
+                    var dataFim = new Date(success.data[0].dataFim);
+
+                    // ajuste da hora e minuto
+                    hoje.setMinutes(dataFim.getMinutes());
+                    hoje.setHours(dataFim.getHours() - 1);
+
+
+                    console.log(hoje)
+                     console.log(dataFim)
+
+                    if(hoje <= dataFim) {
+                        $scope.btnCompra = true;
+                    } else {
+                        $scope.btnCompra = false;
+                    }
+                    
+
                 }, function (error) {
                     console.log(error);
                 });
@@ -115,11 +134,20 @@ angular.module('app.controllers', [])
                 }
 
                 if (campos()) {
+                    $ionicLoading.show();
                     CalendarioService.compraIngresso(data).then(
                         function (success) {
-                            console.log(success);
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: "<b>Compra solicitada</b>",
+                                content: "Obrigado por efetuar a compra com o torcedor digital! Assim que o pagamento for confirmado, seu ingresso será enviado.",
+                                okType: "button-energized"
+                            }).then(function (result) {
+                               $location.path("/page1/page2");
+                            })
                         }, function (error) {
                             console.log(error);
+                             $ionicLoading.hide();
                         }
                     )
                 } else {
