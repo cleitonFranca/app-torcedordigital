@@ -56,44 +56,74 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', 'CalendarioService', '$ionicPopup',
-        function ($location, $scope, $state, $stateParams, $localStorage, CalendarioService, $ionicPopup) {
+    .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', '$ionicLoading', 'CalendarioService', '$ionicPopup',
+        function ($location, $scope, $state, $stateParams, $localStorage, $ionicLoading, CalendarioService, $ionicPopup) {
 
             CalendarioService.calendario().then(
                 function (success) {
                     $scope.calendario = success.data;
+                    $scope.btnCompra = true;
+                 /*   var hoje = new Date();
+                    
+                    console.log(hoje);
+
+                    console.log(success.data);
+
+                    console.log(success.data[0].dataFim);
+                    
+                    var dataFim = new Date(success.data[0].dataFim);
+                    
+                    console.log(dataFim);
+                    // ajuste da hora e minuto
+                    hoje.setMinutes(dataFim.getMinutes());
+                    hoje.setHours(dataFim.getHours() - 1);
+
+                    console.log(hoje);
+
+                    if(hoje <= dataFim) {
+                        $scope.btnCompra = true;
+                    } else {
+                        $scope.btnCompra = false;
+                    }*/
+                    
+
                 }, function (error) {
                     console.log(error);
                 });
-
 
             $scope.checkout = function (data) {
                 $localStorage.id_jogo = data.id;
                 $state.go("checkout");
             }
-           
-            $scope.usuario = {
-                    nome: $localStorage.profile.name,
-                    email: $localStorage.profile.email,
-                    telefone: null,
-                    cep: null,
-                    estado: null,
-                    cidade: null,
-                    bairro: null,
-                    logradouro: null,
-                    complemento: null,
-                    numero: null,
-                    bandeira: null,
-                    numero_cartao: null,
-                    codigo: null,
-                    quantidade: null,
-                    id_jogo: $localStorage.id_jogo
 
-                }
-           
+            $scope.usuario = {
+                nome: $localStorage.profile.name,
+                email: $localStorage.profile.email,
+                telefone: null,
+                cep: null,
+                estado: null,
+                cidade: null,
+                bairro: null,
+                logradouro: null,
+                complemento: null,
+                numero: null,
+                bandeira: null,
+                numero_cartao: null,
+                codigo: null,
+                quantidade: null,
+                validade: null,
+                id_jogo: $localStorage.id_jogo
+
+            }
+
 
             $scope.comprar = function (data) {
                 // Validação dos campos
+
+                if (data.complemento == null) {
+                    data.complemento = " ";
+                }
+
                 var campos = function () {
                     // Total de 14 campos, para a função retornar verdadeiro 
                     // todos deverão estar preenchidos
@@ -105,16 +135,25 @@ angular.module('app.controllers', [])
                         } else {
                             a += 1;
                         }
-                    } 
+                    }
                     return a == 16;
                 }
 
                 if (campos()) {
+                    $ionicLoading.show();
                     CalendarioService.compraIngresso(data).then(
                         function (success) {
-                            console.log(success);
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: "<b>Compra solicitada</b>",
+                                content: "Obrigado por efetuar a compra com o torcedor digital! Assim que o pagamento for confirmado, seu ingresso será enviado.",
+                                okType: "button-energized"
+                            }).then(function (result) {
+                               $location.path("/page1/page2");
+                            })
                         }, function (error) {
                             console.log(error);
+                             $ionicLoading.hide();
                         }
                     )
                 } else {
@@ -127,8 +166,9 @@ angular.module('app.controllers', [])
 
             }
 
-
             /*
+
+                ver depois como proceder com isso!!!!
      
                  if ($localStorage.ingresso) {
                      $scope.ingresso = true;
@@ -150,7 +190,6 @@ angular.module('app.controllers', [])
      
                      $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
                  }*/
-
         }])
 
     .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$stateParams', 'RankService',

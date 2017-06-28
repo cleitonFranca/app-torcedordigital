@@ -39,6 +39,7 @@ angular.module('app.serviceCalendario', [])
                         bandeira: data.bandeira,
                         numero_cartao: data.numero_cartao,
                         codigo: data.codigo,
+                        validade: data.validade,
                         quantidade: data.quantidade,
                         id_jogo: data.id_jogo 
                     }
