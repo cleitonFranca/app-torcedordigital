@@ -62,19 +62,32 @@ angular.module('app.controllers', [])
             CalendarioService.calendario().then(
                 function (success) {
                     $scope.calendario = success.data;
-                    var hoje = new Date();
+                    $scope.btnCompra = true;
+                 /*   
+                 ver tratamento de data para compra de ingressos
+                 
+                 var hoje = new Date();
+                    
+                    console.log(hoje);
+
+                    console.log(success.data);
+
+                    console.log(success.data[0].dataFim);
                     
                     var dataFim = new Date(success.data[0].dataFim);
-
+                    
+                    console.log(dataFim);
                     // ajuste da hora e minuto
                     hoje.setMinutes(dataFim.getMinutes());
                     hoje.setHours(dataFim.getHours() - 1);
+
+                    console.log(hoje);
 
                     if(hoje <= dataFim) {
                         $scope.btnCompra = true;
                     } else {
                         $scope.btnCompra = false;
-                    }
+                    }*/
                     
 
                 }, function (error) {
