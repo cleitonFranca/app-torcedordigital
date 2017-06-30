@@ -1,4 +1,4 @@
-angular.module('app', ['ionic', 'ngStorage', 'ngCordova', 'ngCordovaOauth', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'app.services2', 'app.serviceCalendario', 'app.serviceIngresso', 'LocalStorageModule', 'btford.socket-io', 'angularMoment'])
+angular.module('app', ['ionic', 'ngStorage', 'ngCordova', 'ngCordovaOauth', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'app.services2', 'app.serviceCalendario', 'app.serviceIngresso', 'LocalStorageModule', 'btford.socket-io', 'angularMoment', 'lr.upload'])
 
   .config(function ($ionicConfigProvider, $sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
