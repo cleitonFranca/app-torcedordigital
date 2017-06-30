@@ -42,9 +42,22 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('profilesTabDefaultPageCtrl', ['$location', 'AuthService', '$scope', '$stateParams', 'ProfileService', '$http', '$localStorage',
-        function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage) {
+    .controller('profilesTabDefaultPageCtrl', ['$location', 'AuthService', '$scope', '$stateParams', 'ProfileService', '$http', '$localStorage', 'upload',
+        function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage, upload) {
             $scope.profileData = $localStorage.profile;
+
+            $scope.onUpload = function (files) {
+                console.log('AdvancedMarkupCtrl.onUpload', files);
+            };
+            $scope.onError = function (response) {
+                console.error('AdvancedMarkupCtrl.onError', response);
+            };
+            $scope.onComplete = function (response) {
+                console.log('AdvancedMarkupCtrl.onComplete', response);
+                $scope.profileData.picture.data.url = response.data.location;
+            };
+
+
         }
 
     ])
@@ -63,32 +76,32 @@ angular.module('app.controllers', [])
                 function (success) {
                     $scope.calendario = success.data;
                     $scope.btnCompra = true;
-                 /*   
-                 ver tratamento de data para compra de ingressos
-                 
-                 var hoje = new Date();
+                    /*   
+                    ver tratamento de data para compra de ingressos
                     
-                    console.log(hoje);
+                    var hoje = new Date();
+                       
+                       console.log(hoje);
+   
+                       console.log(success.data);
+   
+                       console.log(success.data[0].dataFim);
+                       
+                       var dataFim = new Date(success.data[0].dataFim);
+                       
+                       console.log(dataFim);
+                       // ajuste da hora e minuto
+                       hoje.setMinutes(dataFim.getMinutes());
+                       hoje.setHours(dataFim.getHours() - 1);
+   
+                       console.log(hoje);
+   
+                       if(hoje <= dataFim) {
+                           $scope.btnCompra = true;
+                       } else {
+                           $scope.btnCompra = false;
+                       }*/
 
-                    console.log(success.data);
-
-                    console.log(success.data[0].dataFim);
-                    
-                    var dataFim = new Date(success.data[0].dataFim);
-                    
-                    console.log(dataFim);
-                    // ajuste da hora e minuto
-                    hoje.setMinutes(dataFim.getMinutes());
-                    hoje.setHours(dataFim.getHours() - 1);
-
-                    console.log(hoje);
-
-                    if(hoje <= dataFim) {
-                        $scope.btnCompra = true;
-                    } else {
-                        $scope.btnCompra = false;
-                    }*/
-                    
 
                 }, function (error) {
                     console.log(error);
@@ -152,11 +165,11 @@ angular.module('app.controllers', [])
                                 content: "Obrigado por efetuar a compra com o torcedor digital! Assim que o pagamento for confirmado, seu ingresso será enviado.",
                                 okType: "button-energized"
                             }).then(function (result) {
-                               $location.path("/page1/page2");
+                                $location.path("/page1/page2");
                             })
                         }, function (error) {
                             console.log(error);
-                             $ionicLoading.hide();
+                            $ionicLoading.hide();
                         }
                     )
                 } else {

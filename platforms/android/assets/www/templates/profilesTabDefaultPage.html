@@ -1,23 +1,31 @@
-<ion-view  id="page6" title="Perfil" class="has-header" padding="true">
-    
+<ion-view id="page6" title="Perfil" class="has-header" padding="true">
+
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
     </ion-nav-buttons>
-    
+
     <ion-content class="has-header padding">
-    
-    <ion-content>
-        <div class="list card">
-            <div class="item item-avatar">
-                <img ng-src="{{profileData.picture.data.url}}">
-                <h2>{{profileData.name}}</h2>
-                <p>{{profileData.id}}</p>
-            </div>
-            <a href="#" class="item item-icon-left">
+
+        <ion-content>
+            <div class="list card">
+                <div class="item item-avatar">
+                    <img ng-src="{{profileData.picture.data.url}}">
+                    <h2>{{profileData.name}}</h2>
+                    <p>
+                        <upload-button class="btn btn-upload" url="http://torcedordigital.com/api/upload"
+                            param="file" accept="acceptTypes" multiple="allowMultiple" force-iframe-upload="forceIframeUpload"
+                            data="uploadData" on-upload="onUpload(file)" on-success="onGlobalSuccess(response)" on-error="onError(response)"
+                            on-complete="onComplete(response)">
+                            Click para trocar imagen de perfil
+                        </upload-button>
+                    </p>
+                </div>
+                <a href="#" class="item item-icon-left">
                 <i class="icon ion-email"></i>
                 {{profileData.email}}
-            </a>       
-        </div>
-    </ion-content>
-    
+            </a>
+            </div>
+
+        </ion-content>
+
 </ion-view>
