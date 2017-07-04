@@ -26,15 +26,18 @@ angular.module('app.services', [])
         }])
 
     .service('AcessTokem', [function () {
+        //?client_id=1312201258817812&
+        //client_secret=f01dfe25d356bab41cd707697548c8f0&grant_type=client_credentials
         var access_token = {
             access: function (storege, http) {
-                if (storege.hasOwnProperty("accessTokenTD") === true) {
+                /*if (storege.hasOwnProperty("accessTokenTD") === true) {*/
                     http.get("https://graph.facebook.com/oauth/access_token", {
                         params: {
                             grant_type: "fb_exchange_token",
                             client_id: "1312201258817812",
                             client_secret: "f01dfe25d356bab41cd707697548c8f0",
-                            fb_exchange_token: storege.accessTokenTD,
+                            fb_exchange_token: 'EAASpcKnn2RQBAJMqSyuIoxUGuBs37ZBJjatzxlqAa0iqZA263ZC2UZA4kfMbGth6wNf7UxSvjqrKPhZAczvxUB3YwNMZCaKTI20Vp0YK3CZCcseyGKiltlyeyICAYSLoUKLfZC3nWDZAXt6SfYnf3G90ZB9ZCLn73cZAZAy8WIyQ1cZBgynPsoGivFjas1oQOf8gmYkRsZD',
+                            //grant_type: "client_credentials",
                             format: "json"
                         }
                     }).then(function (result) {
@@ -45,7 +48,7 @@ angular.module('app.services', [])
                         console.log(error);
                     });
 
-                } else {
+                /*} else {
 
                     http.get("https://graph.facebook.com/oauth/access_token", {
                         params: {
@@ -62,7 +65,7 @@ angular.module('app.services', [])
 
                         console.log(error);
                     });
-                }
+                }*/
             }
         }
         return access_token;
