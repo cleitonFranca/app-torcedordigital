@@ -45,7 +45,7 @@ angular.module('app.controllers', [])
     .controller('profilesTabDefaultPageCtrl', ['$location', 'AuthService', '$scope', '$stateParams', 'ProfileService', '$http', '$localStorage', 'upload',
         function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage, upload) {
             $scope.profileData = $localStorage.profile;
-
+            
             $scope.onUpload = function (files) {
                 console.log('AdvancedMarkupCtrl.onUpload', files);
             };
@@ -54,7 +54,11 @@ angular.module('app.controllers', [])
             };
             $scope.onComplete = function (response) {
                 console.log('AdvancedMarkupCtrl.onComplete', response);
-                $scope.profileData.picture.data.url = response.data.location;
+                try {
+                    $scope.profileData.picture.data.url = response.data.location;                    
+                } catch (error) {
+                    $scope.profileData.picture = {"data":{"url":response.data.location}};
+                }
             };
 
 
@@ -62,18 +66,21 @@ angular.module('app.controllers', [])
 
     ])
 
-    .controller('ingressoCtrl', ['$location', 'AuthService', '$scope', '$stateParams', 'ProfileService', '$http', '$localStorage',
-        function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage) {
-            $scope.ingresso = $localStorage.ingresso;
+    .controller('ingressoCtrl', ['$location', 'AuthService', '$scope', '$stateParams', 'ProfileService', '$http', '$localStorage','IngressoService',
+        function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage, IngressoService) {
+            
+            IngressoService.buscaIngresso($localStorage.profile.email).then(function(data){
+                $scope.ingressos = data.data;
+            },function(error){
+                console.log(error);
+            })
         }
 
     ])
 
     .controller('calendRioDeJogosCtrl', ['$location', '$scope', '$state', '$stateParams', '$localStorage', '$ionicLoading', 'CalendarioService', '$ionicPopup', '$cordovaInAppBrowser',
         function ($location, $scope, $state, $stateParams, $localStorage, $ionicLoading, CalendarioService, $ionicPopup, $cordovaInAppBrowser) {
-
-
-
+           
             var options = {
                 location: 'no',
                 clearcache: 'yes',
@@ -81,7 +88,7 @@ angular.module('app.controllers', [])
             };
 
             $scope.openBrowser = function (quantidade) {
-                $cordovaInAppBrowser.open('http://10.0.0.106:8080/checkout?email='
+                $cordovaInAppBrowser.open('http://torcedordigital.com/checkout?email='
                     +$localStorage.profile.email+'&id_jogo='+$localStorage.id_jogo+'&quantidade='+quantidade, '_system', options)
 
                     .then(function (event) {

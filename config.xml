@@ -2,7 +2,7 @@
 <widget id="com.ionicframework.torcedor.digital" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Torcedor Digital</name>
   <description>
-        Torcedor Digital: Aplicativo social para torcidas de de futebol.
+        Torcedor Digital: Aplicativo social para torcidas de futebol.
     </description>
   <author email="torcedordigital@gmail.com" href="http://torcedordigital.com">
       Cleiton França

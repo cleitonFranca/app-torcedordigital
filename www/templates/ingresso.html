@@ -1,18 +1,26 @@
 <ion-view style="" id="" title="Ingressos">
-  
+
   <ion-content class="has-header" padding="true">
-    <div style="" id="rankTorcedorDigital-list-item-container1" class="item item-body">
+    <div style="" id="rankTorcedorDigital-list-item-container1" class="item item-body" ng-repeat="data in ingressos">
       <!--<div class="show-list-numbers-and-dots" id="rankTorcedorDigital-markdown2">
         <p style="margin-top:0px;color:#000000;">Rank atualizado
           <strong>11-04-2017</strong>
         </p>
       </div>-->
       <ion-list id="rankTorcedorDigital-list2">
-        <ion-item style="" id="rankTorcedorDigital-list-item1" class="">
-           
+        <ion-item>
+          <ion-item>
             <center>
-                <img ng-src="{{ingresso.url}}">
+              <h1>Ingresso</h1>
+              <h2>{{data.jogo.timeCasa}} vs {{data.jogo.timeVisitante}}</h2>
             </center>
+          </ion-item>
+          <label id="calendRioDeJogos-textarea1" class="item item-input">
+          <span class="input-label">Data: {{data.jogo.dataInicio}}</span></label>
+          <label id="calendRioDeJogos-textarea1" class="item item-input">
+          <center>
+            <img ng-src="{{data.url}}">
+          </center>
         </ion-item>
       </ion-list>
     </div>

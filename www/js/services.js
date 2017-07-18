@@ -36,7 +36,7 @@ angular.module('app.services', [])
                             grant_type: "fb_exchange_token",
                             client_id: "1312201258817812",
                             client_secret: "f01dfe25d356bab41cd707697548c8f0",
-                            fb_exchange_token: 'EAASpcKnn2RQBAJMqSyuIoxUGuBs37ZBJjatzxlqAa0iqZA263ZC2UZA4kfMbGth6wNf7UxSvjqrKPhZAczvxUB3YwNMZCaKTI20Vp0YK3CZCcseyGKiltlyeyICAYSLoUKLfZC3nWDZAXt6SfYnf3G90ZB9ZCLn73cZAZAy8WIyQ1cZBgynPsoGivFjas1oQOf8gmYkRsZD',
+                            fb_exchange_token: 'EAASpcKnn2RQBAN0voiadx87pPNAaMhguZAqWT3U3OKlIHGZB1esijK4Raz4nlozjmbr0xc0W3ZBhV2iQfhZCusvVPjVfde0EOC4Rq7eC0ZBldCVwh6U2vdQoJMAZBdPSTThNabvrADHFjmKLTltkQF5HsCUScyIl0ZD',
                             //grant_type: "client_credentials",
                             format: "json"
                         }
