@@ -92,6 +92,25 @@ angular.module('app.services', [])
                     $location.path("/page1/page2");
                 }
             },
+
+            salvarImg: function(local, email) {
+
+                 var settings = {
+                        method: 'POST',
+                        url: SERVIDOR + '/api/upload/salvarNoBanco',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        transformRequest: function (obj) {
+                            var str = [];
+                            for (var p in obj)
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            return str.join("&");
+                        },
+                        data: { local: local, email: email }
+                    }
+
+                    return $http(settings);
+
+            }
         };
 
         return profile;

@@ -59,6 +59,12 @@ angular.module('app.controllers', [])
                 } catch (error) {
                     $scope.profileData.picture = {"data":{"url":response.data.location}};
                 }
+
+                ProfileService.salvarImg(response.data.location, $scope.profileData.email).then(function(data){
+                    console.log(data);
+                }, function(error){
+                    console.log(error);
+                })
             };
 
 
@@ -295,6 +301,7 @@ angular.module('app.controllers', [])
         function ($scope, $stateParams, $cordovaSocialSharing, $localStorage, CrudService) {
 
             $scope.exit = function () {
+                window.localStorage.clear();
                 ionic.Platform.exitApp();
             }
 
