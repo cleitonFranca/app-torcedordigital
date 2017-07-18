@@ -9,7 +9,7 @@
         <ion-content>
             <div class="list card">
                 <div class="item item-avatar">
-                    <img ng-src="{{profileData.picture.data.url}}">
+                    <img ng-show="profileData.picture.data.url" ng-src="{{profileData.picture.data.url}}">
                     <h2>{{profileData.name}}</h2>
                     <p>
                         <upload-button class="btn btn-upload" url="http://torcedordigital.com/api/upload"
