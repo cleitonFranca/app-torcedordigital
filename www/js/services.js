@@ -18,6 +18,22 @@ angular.module('app.services', [])
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                     }
                     return $http(settings)
+                },
+                rankSemanal: function () {
+                    var settings = {
+                        method: 'GET',
+                        url: SERVIDOR + '/api/rankSemanal',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                    return $http(settings)
+                }, 
+                rankMensal: function () {
+                    var settings = {
+                        method: 'GET',
+                        url: SERVIDOR + '/api/rankMensal',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }
+                    return $http(settings)
                 }
             }
 
@@ -176,7 +192,7 @@ angular.module('app.services', [])
                                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                                             }
                                             $http(settings).then(function (data) {
-                                                $location.path("/page1/page2");
+                                                $location.path("/page1/page3");
                                             }, function (error) {
                                                 // caso não exista no servidor criar novo usuario
                                                 console.log("criar um novo usuario no servidor ...");
@@ -199,7 +215,7 @@ angular.module('app.services', [])
                                                 }
                                                 $http(request).then(function (data) {
                                                     console.log("Novo usuário criado com sucesso!");
-                                                    $location.path("/page1/page2");
+                                                    $location.path("/page1/page3");
                                                 }, function (error) {
                                                     console.log(error);
                                                 })
@@ -283,7 +299,9 @@ angular.module('app.services', [])
                     },
                     data: {
                         nome: usuario.nome,
-                        email: usuario.email
+                        sobreNome: usuario.sobreNome,
+                        email: usuario.email,
+                        senha: usuario.senha
                     }
                 }
 

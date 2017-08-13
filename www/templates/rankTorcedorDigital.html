@@ -1,15 +1,15 @@
-<ion-view style="" id="page4" title="Rank Torcedor Digital">
+<ion-view id="page4" title="Rank Torcedor Digital">
 
   <div class="tabs-striped tabs-color-balanced">
     <div class="tabs">
-      <a class="tab-item active" href="">
+      <a class="{{classActiveG}}" ng-click="buscaRank()">
         GERAL
       </a>
-      <a class="tab-item" href="">
+      <a class="{{classActiveS}}" ng-click="buscaRankSemanal()">
         SEMANAL
       </a>
-      <a class="tab-item" href="">
-        QUINZENAL
+      <a class="{{classActiveM}}" ng-click="buscaRankMensal()">
+        MENSAL
       </a>
     </div>
   </div>
@@ -17,7 +17,7 @@
   <ion-content class="has-header" padding="true">
     <div id="rankTorcedorDigital-list-item-container1" class="item item-body" ng-repeat="data in rank">
       <ion-list id="rankTorcedorDigital-list2">
-        <ion-item style="" id="rankTorcedorDigital-list-item1" class="item-avatar">
+        <ion-item id="rankTorcedorDigital-list-item1" class="item-avatar">
           <img ng-src="{{data.img}}">
           <h1 style="float:right"><strong>{{$index+1}}</strong></h1>
           <h2>{{data.nome}}</h2>

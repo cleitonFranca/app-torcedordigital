@@ -248,12 +248,27 @@ angular.module('app.controllers', [])
                  }*/
         }])
 
-    .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$stateParams', 'RankService',
-        function ($state, $scope, $location, $stateParams, RankService) {
+    .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$localStorage', '$stateParams', 'RankService', 'ProfileService',
+        function ($state, $scope, $location, $localStorage, $stateParams, RankService, ProfileService) {
 
-            function buscaRank() {
+            $scope.buscaRank = function() {
+                // atualizar imagem de perfil
+                try {
+                    if ($localStorage.profile.picture.data.url) {
+                        ProfileService.salvarImg($localStorage.profile.picture.data.url, $localStorage.profile.email).then(function (data) {}, 
+                        function (error) {})
+                    }
+                } catch (error) {}
+
                 RankService.rankGeral().then(function (res) {
+                    $scope.classActiveG = "tab-item active";
+                    $scope.classActiveS = "tab-item ";
+                    $scope.classActiveM = "tab-item ";
+                    
                     $scope.rank = res.data;
+
+                    console.log($scope.rank)
+
                 },
                     function (error) {
                         console.log(error);
@@ -262,11 +277,47 @@ angular.module('app.controllers', [])
                 $location.path("/page1/page4");
             }
 
-            $scope.restart = function () {
-                buscaRank();
+            $scope.buscaRankSemanal = function() {
+
+                RankService.rankSemanal().then(function (res) {
+                    $scope.classActiveG = "tab-item ";
+                    $scope.classActiveS = "tab-item active";
+                    $scope.classActiveM = "tab-item ";
+
+                    $scope.rank = res.data;
+                    console.log($scope.rank)
+                },
+                    function (error) {
+                        console.log(error);
+                    })
+
+                $location.path("/page1/page4");
+
             }
 
-            buscaRank();
+            $scope.buscaRankMensal = function() {
+
+                RankService.rankMensal().then(function (res) {
+                    $scope.classActiveG = "tab-item ";
+                    $scope.classActiveS = "tab-item ";
+                    $scope.classActiveM = "tab-item active";
+
+                    $scope.rank = res.data;
+                    console.log($scope.rank)
+                },
+                    function (error) {
+                        console.log(error);
+                    })
+
+                $location.path("/page1/page4");
+
+            }
+
+            $scope.restart = function () {
+                $scope.buscaRank();
+            }
+
+            $scope.buscaRank();
         }])
 
     .controller('novoUsuarioCtrl', ['$scope', '$stateParams', '$location', '$localStorage', 'CrudService',
@@ -321,24 +372,24 @@ angular.module('app.controllers', [])
             $ionicSideMenuDelegate.canDragContent(false);
 
             if ($localStorage.hasOwnProperty("profile") === true) {
-                $location.path("/page1/page2");
-                AuthService.authenticated().then(function (data) {}, 
-                function (error) {
-                    var novoUsuario = {
-                        nome: $localStorage.profile.name,
-                        email: $localStorage.profile.email
-                    }
-                    $ionicLoading.show({
-                        template: 'Atualizando informações do usuário...'
+                $location.path("/page1/page3");
+                AuthService.authenticated().then(function (data) { },
+                    function (error) {
+                        var novoUsuario = {
+                            nome: $localStorage.profile.name,
+                            email: $localStorage.profile.email
+                        }
+                        $ionicLoading.show({
+                            template: 'Atualizando informações do usuário...'
+                        })
+                        CrudService.create(novoUsuario).then(function (success) {
+                            $ionicLoading.hide();
+                            $location.path("/page1/page3");
+                        }, function (error) {
+                            $ionicLoading.hide();
+                            console.log(error);
+                        })
                     })
-                    CrudService.create(novoUsuario).then(function (success) {
-                        $ionicLoading.hide();
-                        $location.path("/page1/page2");
-                    }, function (error) {
-                        $ionicLoading.hide();
-                        console.log(error);
-                    })
-                })
 
             } else {
                 $location.path("/page5");
@@ -372,7 +423,7 @@ angular.module('app.controllers', [])
 
                     $localStorage.username = d.data.usuario.nome;
                     $localStorage.profile = data;
-                    $location.path("/page1/page2");
+                    $location.path("/page1/page3");
 
                 }, function (error) {
                     console.log(error);
