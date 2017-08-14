@@ -5,7 +5,7 @@ angular.module('app.controllers', [])
         function ($location, AuthService, $scope, $stateParams, $http, $localStorage,
             AcessTokem, $cordovaSocialSharing, CrudService) {
 
-            function buscaFedd() {
+            $scope.buscaFedd = function () {
                 AcessTokem.access($localStorage, $http);
                 $http.get("https://graph.facebook.com/v2.8/me/feed?limit=10", { params: { access_token: $localStorage.accessTokenTD, fields: "created_time, description, picture, message, source, name, link, full_picture", format: "json" } })
                     .then(function (result) {
@@ -35,10 +35,12 @@ angular.module('app.controllers', [])
             }
 
             $scope.restartFeed = function () {
-                buscaFedd();
+
+                $scope.buscaFedd();
             }
 
-            buscaFedd();
+            $scope.buscaFedd();
+
         }
 
     ])
@@ -77,7 +79,11 @@ angular.module('app.controllers', [])
         function ($location, AuthService, $scope, $stateParams, ProfileService, $http, $localStorage, IngressoService) {
 
             IngressoService.buscaIngresso($localStorage.profile.email).then(function (data) {
-                $scope.ingressos = data.data;
+              
+                if(data.data.length > 0)
+                    $scope.ingressos = data.data;
+                else
+                    $scope.msg = "Não há ingressos gerados!";
             }, function (error) {
                 console.log(error);
             })
@@ -115,32 +121,6 @@ angular.module('app.controllers', [])
                 function (success) {
                     $scope.calendario = success.data;
                     $scope.btnCompra = true;
-                    /*   
-                    ver tratamento de data para compra de ingressos
-                    
-                    var hoje = new Date();
-                       
-                       console.log(hoje);
-   
-                       console.log(success.data);
-   
-                       console.log(success.data[0].dataFim);
-                       
-                       var dataFim = new Date(success.data[0].dataFim);
-                       
-                       console.log(dataFim);
-                       // ajuste da hora e minuto
-                       hoje.setMinutes(dataFim.getMinutes());
-                       hoje.setHours(dataFim.getHours() - 1);
-   
-                       console.log(hoje);
-   
-                       if(hoje <= dataFim) {
-                           $scope.btnCompra = true;
-                       } else {
-                           $scope.btnCompra = false;
-                       }*/
-
 
                 }, function (error) {
                     console.log(error);
@@ -221,53 +201,28 @@ angular.module('app.controllers', [])
                 }
 
             }
-
-            /*
-
-                ver depois como proceder com isso!!!!
-     
-                 if ($localStorage.ingresso) {
-                     $scope.ingresso = true;
-                 }
-     
-                 $scope.comprar = function (data) {
-     
-                     var ingresso = {}
-     
-                     var qrcode = "http://api.qrserver.com/v1/create-qr-code/?data=http://torcedordigital.com/api/pontuarIngresso?id=" + $localStorage.profile.id + "&amp;size=300x500";
-     
-                     ingresso.id = data;
-                     ingresso.url = qrcode;
-     
-                     $localStorage.ingresso = ingresso;
-     
-                     $scope.ingresso = true;
-     
-     
-                     $state.transitionTo($state.current, $stateParams, { reload: true, inherit: false, notify: true });
-                 }*/
         }])
 
     .controller('rankTorcedorDigitalCtrl', ['$state', '$scope', '$location', '$localStorage', '$stateParams', 'RankService', 'ProfileService',
         function ($state, $scope, $location, $localStorage, $stateParams, RankService, ProfileService) {
 
-            $scope.buscaRank = function() {
+            $scope.buscaRank = function () {
                 // atualizar imagem de perfil
                 try {
                     if ($localStorage.profile.picture.data.url) {
-                        ProfileService.salvarImg($localStorage.profile.picture.data.url, $localStorage.profile.email).then(function (data) {}, 
-                        function (error) {})
+                        ProfileService.salvarImg($localStorage.profile.picture.data.url, $localStorage.profile.email).then(function (data) { },
+                            function (error) { })
                     }
-                } catch (error) {}
+                } catch (error) { }
 
                 RankService.rankGeral().then(function (res) {
                     $scope.classActiveG = "tab-item active";
                     $scope.classActiveS = "tab-item ";
                     $scope.classActiveM = "tab-item ";
-                    
+
                     $scope.rank = res.data;
 
-                    console.log($scope.rank)
+
 
                 },
                     function (error) {
@@ -277,7 +232,7 @@ angular.module('app.controllers', [])
                 $location.path("/page1/page4");
             }
 
-            $scope.buscaRankSemanal = function() {
+            $scope.buscaRankSemanal = function () {
 
                 RankService.rankSemanal().then(function (res) {
                     $scope.classActiveG = "tab-item ";
@@ -285,7 +240,7 @@ angular.module('app.controllers', [])
                     $scope.classActiveM = "tab-item ";
 
                     $scope.rank = res.data;
-                    console.log($scope.rank)
+
                 },
                     function (error) {
                         console.log(error);
@@ -295,7 +250,7 @@ angular.module('app.controllers', [])
 
             }
 
-            $scope.buscaRankMensal = function() {
+            $scope.buscaRankMensal = function () {
 
                 RankService.rankMensal().then(function (res) {
                     $scope.classActiveG = "tab-item ";
@@ -303,7 +258,7 @@ angular.module('app.controllers', [])
                     $scope.classActiveM = "tab-item active";
 
                     $scope.rank = res.data;
-                    console.log($scope.rank)
+
                 },
                     function (error) {
                         console.log(error);
@@ -372,7 +327,7 @@ angular.module('app.controllers', [])
             $ionicSideMenuDelegate.canDragContent(false);
 
             if ($localStorage.hasOwnProperty("profile") === true) {
-                $location.path("/page1/page3");
+                $location.path("/page1/page2");
                 AuthService.authenticated().then(function (data) { },
                     function (error) {
                         var novoUsuario = {
@@ -384,7 +339,7 @@ angular.module('app.controllers', [])
                         })
                         CrudService.create(novoUsuario).then(function (success) {
                             $ionicLoading.hide();
-                            $location.path("/page1/page3");
+                            $location.path("/page1/page2");
                         }, function (error) {
                             $ionicLoading.hide();
                             console.log(error);
@@ -423,7 +378,7 @@ angular.module('app.controllers', [])
 
                     $localStorage.username = d.data.usuario.nome;
                     $localStorage.profile = data;
-                    $location.path("/page1/page3");
+                    $location.path("/page1/page2");
 
                 }, function (error) {
                     console.log(error);

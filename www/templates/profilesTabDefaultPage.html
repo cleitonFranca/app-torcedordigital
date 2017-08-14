@@ -12,18 +12,21 @@
                     <img ng-src="{{profileData.picture.data.url}}">
                     <h2>{{profileData.name}}</h2>
                     <p>
-                        <upload-button class="btn btn-upload" url="http://torcedordigital.com/api/upload"
-                            param="file" accept="acceptTypes" multiple="allowMultiple" force-iframe-upload="forceIframeUpload"
-                            data="uploadData" on-upload="onUpload(file)" on-success="onGlobalSuccess(response)" on-error="onError(response)"
-                            on-complete="onComplete(response)">
+                        <upload-button class="btn btn-upload" url="http://torcedordigital.com/api/upload" param="file" accept="acceptTypes" multiple="allowMultiple"
+                            force-iframe-upload="forceIframeUpload" data="uploadData" on-upload="onUpload(file)" on-success="onGlobalSuccess(response)"
+                            on-error="onError(response)" on-complete="onComplete(response)">
                             Click para trocar imagen de perfil
                         </upload-button>
                     </p>
                 </div>
-                <a href="#" class="item item-icon-left">
+                <a class="item item-icon-left">
                 <i class="icon ion-email"></i>
                 {{profileData.email}}
             </a>
+
+           <!-- <div class="padding">
+                <button ng-click="recSenha(profileData.email)" class="button button-block icon-right ion-person button-balanced">Alterar Senha</button>
+            </div>-->
             </div>
 
         </ion-content>

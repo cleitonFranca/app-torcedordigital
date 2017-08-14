@@ -8,11 +8,15 @@
         margin-bottom: 2% 
       }
     </style>
-    <h3>Ganhe pontos convidando seus amigos!</h3>
-    <button ng-click="shareAnywhere('teste')" class="button button-block icon-left  button-energized">Convidar</button>
+    <h3 style="text-align: center">Ganhe pontos convidando seus amigos!</h3>
+    <button 
+      ng-click="shareAnywhere('teste')" 
+      class="button button-block icon-right ion-person-add button-balanced">
+        Convidar
+    </button>
     
 
-    <div style="" ng-repeat="data in calendario" id="calendRioDeJogos-list-item-container2" class="item item-body">
+    <div ng-repeat="data in calendario" id="calendRioDeJogos-list-item-container2" class="item item-body">
       <div class="show-list-numbers-and-dots" id="calendRioDeJogos-markdown4">
       </div>
       <ion-list id="calendRioDeJogos-list5">
@@ -27,7 +31,12 @@
         <label id="calendRioDeJogos-textarea1" class="item item-input">
           <span class="input-label">Local: </span></label>
       </ion-list>
-      <button class="button button-positive  button-block" id="calendRioDeJogos-button3" ng-click="convidarParaJogo(data)">Convidar para jogo</button>
+      <button 
+        class="button button-positive icon-right ion-ios-football button-block" 
+        id="calendRioDeJogos-button3" 
+        ng-click="convidarParaJogo(data)">
+          Convidar para jogo
+      </button>
 
     </div>
 

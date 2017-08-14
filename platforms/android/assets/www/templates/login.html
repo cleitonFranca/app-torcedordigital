@@ -1,18 +1,15 @@
 <ion-view hide-nav-bar="true" style="" id="page5" title="Login">
-  <!--<div class="bar bar-header bar-energized">
-  	<h1 class="title">Login</h1>
-	</div>-->
-  
+
   <ion-content class="has-header" padding="true">
-    
+
     <div style="height: 60px;" class="spacer"></div>
-    
+
     <center style="color:tomato">{{error}}</center>
- 
+
     <div style="height: 10px;" class="spacer"></div>
 
     <form class="list" id="login-form1">
-     <ion-list id="login-list1" style="{{display}}">
+      <ion-list id="login-list1" style="{{display}}">
         <label id="login-input1" class="item item-input">
           <span class="input-label">E-mail</span>
           <input placeholder="" type="text" ng-model="usuario.email" name="email">
@@ -23,29 +20,23 @@
           <input placeholder="" type="password" ng-model="usuario.senha" name="senha">
         </label>
       </ion-list>
-      
-       <div class="padding"  style="{{display}}">
-         <!--  <button ng-click="loginFacebook()"  class="button icon-left ion-social-facebook-outline">Entre com Facebook</button> -->
-            <button ng-click="loginServidor(usuario)" class="button button-block icon-left  button-energized">Entrar</button>
-        </div>
-         <div class="padding"  style="{{display}}">
-         <!--  <button ng-click="loginFacebook()"  class="button icon-left ion-social-facebook-outline">Entre com Facebook</button> -->
-            <button ng-click="cancel()" class="button button-block icon-left  button-danger">Cancelar</button>
-        </div>
+
+      <div class="padding" style="{{display}}">
+        <button ng-click="loginServidor(usuario)" class="button button-block icon-left button-balanced">Entrar</button>
+      </div>
+      <div class="padding" style="{{display}}">
+        <button ng-click="cancel()" class="button button-block icon-left  button-danger">Cancelar</button>
+      </div>
       <div style="height: 20px;" class="spacer"></div>
-      <!-- <a class="button button-stable  button-block" style="color:#060505;" id="login-button1" ui-sref="tabsController.rankTorcedorDigital">Log in</a> -->
-      
-       <div class="padding" style="{{displayButton}}">
-         <!--  <button ng-click="loginFacebook()"  class="button icon-left ion-social-facebook-outline">Entre com Facebook</button> -->
-            <button ng-click="loginFacebook()" class="button button-block icon-left ion-social-facebook button-positive">Entre com Facebook</button>
-        </div>
-       
-        <div class="padding" style="{{displayButton}}">
-         <!--  <button ng-click="loginFacebook()"  class="button icon-left ion-social-facebook-outline">Entre com Facebook</button> -->
-            <button ng-click="loginTorcedor()" class="button button-block icon-left  button-energized">Entre com Torcedor Digital</button>
-        </div>
-        <a class="button button-positive  button-block button-clear"  style="{{display}}" id="login-button2" ng-href="#/recSenha">Recuperar senha</a>
-        <a class="button button-positive  button-block button-clear"  style="{{display}}" id="login-button2" ng-href="#/novoUsuario">ou Criar Conta</a>
+      <div class="padding" style="{{displayButton}}">
+        <button ng-click="loginFacebook()" class="button button-block icon-left ion-social-facebook button-positive">Entre com Facebook</button>
+      </div>
+      <div class="padding" style="{{displayButton}}">
+        <button ng-click="loginTorcedor()" class="button button-block icon-left  button-balanced">Entre com Torcedor Digital</button>
+      </div>
+      <a class="button button-balanced button-block button-clear" style="{{display}}" id="login-button2" ng-href="#/recSenha">Recuperar Senha</a>
+      <hr style="{{display}}" />
+      <a class="button button-balanced button-block button-clear" style="{{display}}" id="login-button2" ng-href="#/novoUsuario">Criar Conta</a>
     </form>
   </ion-content>
 </ion-view>

@@ -26,7 +26,7 @@ angular.module('app.services', [])
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                     }
                     return $http(settings)
-                }, 
+                },
                 rankMensal: function () {
                     var settings = {
                         method: 'GET',
@@ -42,46 +42,25 @@ angular.module('app.services', [])
         }])
 
     .service('AcessTokem', [function () {
-        //?client_id=1312201258817812&
-        //client_secret=f01dfe25d356bab41cd707697548c8f0&grant_type=client_credentials
+
         var access_token = {
             access: function (storege, http) {
-                /*if (storege.hasOwnProperty("accessTokenTD") === true) {*/
-                    http.get("https://graph.facebook.com/oauth/access_token", {
-                        params: {
-                            grant_type: "fb_exchange_token",
-                            client_id: "1312201258817812",
-                            client_secret: "f01dfe25d356bab41cd707697548c8f0",
-                            fb_exchange_token: 'EAASpcKnn2RQBAN0voiadx87pPNAaMhguZAqWT3U3OKlIHGZB1esijK4Raz4nlozjmbr0xc0W3ZBhV2iQfhZCusvVPjVfde0EOC4Rq7eC0ZBldCVwh6U2vdQoJMAZBdPSTThNabvrADHFjmKLTltkQF5HsCUScyIl0ZD',
-                            //grant_type: "client_credentials",
-                            format: "json"
-                        }
-                    }).then(function (result) {
-                        storege.accessTokenTD = result.data.access_token;
 
-                    }, function (error) {
+                http.get("https://graph.facebook.com/oauth/access_token", {
+                    params: {
+                        grant_type: "fb_exchange_token",
+                        client_id: "1312201258817812",
+                        client_secret: "f01dfe25d356bab41cd707697548c8f0",
+                        fb_exchange_token: 'EAASpcKnn2RQBAN0voiadx87pPNAaMhguZAqWT3U3OKlIHGZB1esijK4Raz4nlozjmbr0xc0W3ZBhV2iQfhZCusvVPjVfde0EOC4Rq7eC0ZBldCVwh6U2vdQoJMAZBdPSTThNabvrADHFjmKLTltkQF5HsCUScyIl0ZD',
+                        format: "json"
+                    }
+                }).then(function (result) {
+                    storege.accessTokenTD = result.data.access_token;
 
-                        console.log(error);
-                    });
+                }, function (error) {
 
-                /*} else {
-
-                    http.get("https://graph.facebook.com/oauth/access_token", {
-                        params: {
-                            grant_type: "fb_exchange_token",
-                            client_id: "1312201258817812",
-                            client_secret: "f01dfe25d356bab41cd707697548c8f0",
-                            fb_exchange_token: "EAASpcKnn2RQBAOOOijAhWaOMzV0aZBinAgQoeaKeeJHsukrl0fMBv9aiBZBfd2tQLdmDZAAswyBTTARq8g4lSMhpfHhiP4cZC8bPGUSp3iuogv5MUabzFriGsgx1ZAeGhhRiZBkQBlBZBCZBQc6hZBcA5MbVWt4tQaCUZD",
-                            format: "json"
-                        }
-                    }).then(function (result) {
-                        storege.accessTokenTD = result.data.access_token;
-
-                    }, function (error) {
-
-                        console.log(error);
-                    });
-                }*/
+                    console.log(error);
+                });
             }
         }
         return access_token;
@@ -109,23 +88,21 @@ angular.module('app.services', [])
                 }
             },
 
-            salvarImg: function(local, email) {
+            salvarImg: function (local, email) {
 
-                 var settings = {
-                        method: 'POST',
-                        url: SERVIDOR + '/api/upload/salvarNoBanco',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        transformRequest: function (obj) {
-                            var str = [];
-                            for (var p in obj)
-                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                            return str.join("&");
-                        },
-                        data: { local: local, email: email }
-                    }
-
-                    return $http(settings);
-
+                var settings = {
+                    method: 'POST',
+                    url: SERVIDOR + '/api/upload/salvarNoBanco',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function (obj) {
+                        var str = [];
+                        for (var p in obj)
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    data: { local: local, email: email }
+                }
+                return $http(settings);
             }
         };
 
@@ -192,7 +169,7 @@ angular.module('app.services', [])
                                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                                             }
                                             $http(settings).then(function (data) {
-                                                $location.path("/page1/page3");
+                                                $location.path("/page1/page2");
                                             }, function (error) {
                                                 // caso não exista no servidor criar novo usuario
                                                 console.log("criar um novo usuario no servidor ...");
@@ -215,7 +192,7 @@ angular.module('app.services', [])
                                                 }
                                                 $http(request).then(function (data) {
                                                     console.log("Novo usuário criado com sucesso!");
-                                                    $location.path("/page1/page3");
+                                                    $location.path("/page1/page2");
                                                 }, function (error) {
                                                     console.log(error);
                                                 })
@@ -279,7 +256,7 @@ angular.module('app.services', [])
             pontuar: function (email) {
                 var settings = {
                     method: 'GET',
-                    url: SERVIDOR + '/api/pontuarPorConvite?email='+email,
+                    url: SERVIDOR + '/api/pontuarPorConvite?email=' + email,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }
 
